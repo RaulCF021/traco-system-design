@@ -24,3 +24,34 @@
 @media(prefers-reduced-motion:reduce){.te-editor *{transition:none!important}}
 .te-spec{display:block;color:#506150;font:11px/1.5 var(--te-mono);margin:0 0 9px}
 
+/* Technical stage. Cards retain the component-specific symbols used by the library. */
+.te-editor {
+  --te-line:#575462;--te-main:#f3f2fc;--te-muted:#ccc8d4;
+  background:#25242d;border-color:#524f5c;border-radius:6px 6px 0 0;box-shadow:none;
+}
+.te-bar {color:#f3f2fc;background:#201f27;border-bottom:1px solid #4c4957}
+.te-bar .te-title::before {background:linear-gradient(90deg,transparent 42%,#201f27 42% 58%,transparent 58%),linear-gradient(0deg,transparent 42%,#201f27 42% 58%,transparent 58%),#f58369}
+.te-bar .te-count,.te-bar .te-percent {color:#c7c4d0}
+.te-bar .te-button {color:#f3f2fc}
+.te-bar .te-divider {background:#5f5b6d}
+.te-bar .te-button:hover:enabled,.te-button:hover:enabled {background:#484551}
+.te-viewport {
+  height:clamp(230px,34vh,390px);background-color:#30303a;
+  background-image:radial-gradient(#585663 .9px,transparent 1px);background-size:15px 15px;
+  box-shadow:inset 0 3px 7px #1d1b242e;
+}
+.te-edge,.te-wires marker path {stroke:#f8a18a}
+.te-node-face {background:#fbf9f3;color:#292831;border:1px solid #dfd9cc;box-shadow:0 3px 0 #18171ed9,0 5px 12px #14131a59}
+.te-node-face:hover,.te-selected .te-node-face {border-color:#ff9d81;box-shadow:0 0 0 2px #ff957c,0 3px 0 #1a1921}
+.te-node-tag {color:#55505d;border-color:#d8d3cb;background:#efede9}
+.te-port {border-color:#8c4f45;background:#ffb39d}.te-port:hover,.te-source .te-port {background:#ff7759}
+.te-library,.te-info {background:#292831;border-color:#53505e}
+.te-part,.te-text,.te-replicas {background:#35333f;color:#f3f2fc;border-color:#595664}
+.te-part:hover {background:#43404e;border-color:#ba8c82}
+.te-notice {background:#48332f;color:#ffcebb;border-color:#724a3f}
+.te-insp-copy p,.te-spec {color:#d0cbd5}
+.te-link {background:#3f3b48;color:#eee7f2}
+.te-danger {color:#ffb19e}
+.te-empty {color:#d9d6de}
+.te-editor button:focus-visible {outline:3px solid #ffac94}
+@media(max-width:580px){.te-viewport{height:245px}.te-part{min-height:32px}.te-tools .te-button{min-width:27px}}

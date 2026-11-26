@@ -1,5 +1,5 @@
-# Traço
+# Traço — Mesa de inspeção
 
-A navegação do site funciona como um índice de documentação. Aulas e tutorial ficam no grupo Estudo. Missões, experimentos e editor livre ficam no Laboratório. No desktop o índice ocupa a lateral esquerda. Em telas menores o botão Menu abre os mesmos destinos.
+A composição aprovada é a versão C. Cada página privilegia um objeto de inspeção — prancha, topologia ou par de arquiteturas — sobre uma bancada grafite. A explicação e os controles ficam no painel inferior. Os desenhos de engenharia preservam suas próprias cores.
 
-A interface usa texto sem serifa, fundo branco e controles neutros. As pranchas e os diagramas preservam a linguagem de desenho de engenharia. O conteúdo da aula e o trabalho no editor têm prioridade sobre introduções e ilustrações de capa.
+O cabeçalho horizontal dá acesso às aulas, ao tutorial, às missões, aos experimentos e ao modo livre. Em telas pequenas o botão Menu expõe os mesmos destinos. O coral identifica a etapa selecionada e a ação principal. O conteúdo usa tipos sem serifa; as unidades de medida usam números monoespaçados.

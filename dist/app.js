@@ -48,8 +48,7 @@ function render(v){
   if(view==='tutorial'){app.innerHTML='<div id="tutorial"></div>';editor=mountTutorial(app.firstElementChild,()=>navigate('missao/'+lessons[0].id));return}
   if(view==='experiments'){app.innerHTML=hero('Laboratório comparativo','Experimentos A/B','Registre sua previsão e coloque duas arquiteturas sob a mesma carga.')+'<div id="experiments"></div>';editor=mountExperiments(app.lastElementChild);return}
   if(view==='track'){
-    app.innerHTML=hero('Trilha de System Design','Missões de arquitetura',Object.keys(saved.completed).length+' de '+lessons.length+' missões concluídas')+'<div class="cards">'+lessons.map((l,i)=>'<article class="mission"><div class="micro">Exercício '+String(i+1).padStart(2,'0')+' · '+esc(l.level)+' · '+esc(l.minutes)+' min</div><h2>'+esc(l.title)+'</h2><p>'+esc(l.subtitle)+'</p><button class="secondary" data-id="'+esc(l.id)+'">'+(saved.completed[l.id]?'Revisitar missão':'Abrir missão')+'</button></article>').join('')+'</div>';
-    app.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>selectLesson(b.dataset.id));return;
+    showMissionDesk(selected);return;
   }
   const l=current(), free=view==='sandbox',draft=saved.drafts[l.id];
   graph=structuredClone(draft?.graph??l.graph);load=draft?.load??l.load;
@@ -65,6 +64,24 @@ function render(v){
   range.oninput=()=>{load=Number(range.value);setLoad();invalidate();persist()};
   editor=mountEditor(app.querySelector('#editor'),graph,g=>{graph=g;invalidate();persist()});
   app.querySelector('#run').onclick=run;goals();
+}
+function showMissionDesk(lesson){
+  const {nodes,edges}=lesson.graph;
+  const byId=new Map(nodes.map(node=>[node.id,node]));
+  const width=Math.max(...nodes.map(n=>n.x))+160;
+  const height=Math.max(...nodes.map(n=>n.y))+65;
+  const wires=edges.map(edge=>{
+    const a=byId.get(edge.from),b=byId.get(edge.to);
+    return '<line x1="'+(a.x+65)+'" y1="'+(a.y+17)+'" x2="'+(b.x+65)+'" y2="'+(b.y+17)+'"/>';
+  }).join('');
+  const blocks=nodes.map(n=>'<g transform="translate('+n.x+' '+n.y+')"><rect width="130" height="35" rx="3"/><text x="65" y="23">'+esc(catalog[n.type].name)+'</text></g>').join('');
+  app.innerHTML='<div class="ms-stage"><div class="ms-heading"><h1>Missões de arquitetura</h1><span>'+Object.keys(saved.completed).length+' de '+lessons.length+' concluídas</span></div><svg class="ms-diagram" role="img" aria-label="Topologia inicial de '+esc(lesson.title)+'" viewBox="0 0 '+width+' '+height+'">'+wires+blocks+'</svg><div class="ms-caption">Topologia inicial · '+esc(lesson.title)+'</div></div>'+
+  '<section class="ms-dock"><nav aria-label="Selecionar missão">'+lessons.map((l,i)=>'<button type="button" data-mission="'+i+'" aria-pressed="'+(l===lesson)+'">'+esc(l.title)+'</button>').join('')+'</nav><div class="ms-detail"><div><small>'+esc(lesson.level)+' · '+lesson.minutes+' min · '+fmt(lesson.load)+' req/s</small><h2>'+esc(lesson.title)+'</h2><p>'+esc(lesson.brief)+'</p></div><button class="run" id="launch">Abrir missão no grid</button></div></section>';
+  app.querySelectorAll('[data-mission]').forEach(button=>button.onclick=()=>{
+    showMissionDesk(lessons[Number(button.dataset.mission)]);
+    app.querySelector('[aria-pressed="true"]').focus();
+  });
+  app.querySelector('#launch').onclick=()=>selectLesson(lesson.id);
 }
 function invalidate(){if(result){previous=result;result=null;app.querySelector('#result').innerHTML='<p class="footnote">Cenário alterado. Simule novamente para atualizar as métricas.</p>';goals()}}
 function goals(){const el=app.querySelector('#goals');if(!el)return;

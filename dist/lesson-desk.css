@@ -1,0 +1,38 @@
+.lesson-desk{background:#25242d;color:#f3f2fc;font:16px/1.55 "Segoe UI",Arial,sans-serif;max-width:1190px;margin:0 auto;overflow:hidden}
+.desk-stage{padding:18px clamp(16px,3vw,38px) 17px;background:#30303a radial-gradient(#50505c 1px,transparent 1px) 0 0/15px 15px}
+.desk-top{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#dfddea;font:13px/1.5 Consolas,monospace}
+.lesson-desk .desk-link{color:#ffa58f;text-underline-offset:3px}
+.desk-top .desk-link{text-decoration:none}
+.desk-top .desk-link:hover{text-decoration:underline}
+.desk-stage h1{font:700 clamp(31px,3.4vw,44px)/1.1 "Segoe UI",Arial,sans-serif;letter-spacing:-.055em;color:#f3f2fc;margin:10px 0 14px}
+.desk-figure{width:min(100%,615px);margin:0 auto}
+.desk-figure img,.desk-schema{display:block;width:100%;border:1px solid #15151b}
+.desk-figure a{display:block;cursor:zoom-in}
+.desk-figure figcaption{font:13px/1.5 Consolas,monospace;color:#dfddea;margin:5px 0 0}
+.desk-label,.desk-flow{text-anchor:middle;fill:#173e40;font:600 15px Consolas,monospace}
+.desk-flow{font-size:13px}
+.desk-dock{border-top:3px solid #fa785b;background:#25242d;padding:18px clamp(16px,3vw,38px) 25px}
+.desk-tabs,.desk-actions{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.desk-tabs button,.desk-actions button,.desk-answers button{background:transparent;color:#f3f2fc;border:1px solid #666270;cursor:pointer;font:inherit}
+.desk-tabs button{font-size:14px;line-height:1.35;padding:6px 9px;border-radius:2px;text-align:left}
+.desk-tabs button[aria-current=step],.desk-actions .desk-primary{background:#f58369;color:#221b1c;border-color:transparent}
+.desk-tabs button:hover,.desk-actions button:hover,.desk-answers button:hover{border-color:#fba089}
+.desk-detail{max-width:790px;margin-top:15px}
+.desk-detail h2{font:650 24px/1.2 "Segoe UI",Arial,sans-serif;letter-spacing:-.04em;margin:0 0 7px;color:#f3f2fc}
+.desk-detail p{margin:0 0 10px}
+.desk-lead{color:#c7c4d0}
+.desk-actions{margin-top:18px;gap:8px}
+.desk-actions button,.desk-actions a{display:inline-block;text-decoration:none;font:650 15px/1.4 "Segoe UI",Arial,sans-serif;padding:9px 15px;border-radius:4px}
+.desk-tools{margin-top:23px;border-top:1px solid #524e5b}
+.desk-tools details{border-bottom:1px solid #484550;padding:9px 1px;font-size:14px}
+.desk-tools summary{font-weight:550;color:#dcd9e6}
+.desk-tools p,.desk-tools ol{margin:8px 0}
+.desk-tools .baseline{background:#33313b;border:1px solid #52505c;color:#e2dfe8;margin:10px 0}
+.desk-tools .baseline .micro,.desk-tools .baseline p,.desk-tools .baseline small{color:#d2cfda}
+.desk-tools .meter i{background:#575462}
+.desk-answers{display:grid;gap:7px}
+.desk-answers button{display:flex;gap:12px;align-items:baseline;text-align:left;padding:9px 13px;border-radius:3px}
+.desk-answers b{color:#ffa28b;font:600 14px Consolas,monospace}
+.desk-answers .selected{border-color:#ee967e;background:#393038}
+.desk-detail .desk-response{margin:8px 0;color:#f6cbbf}
+@media(max-width:510px){.desk-stage,.desk-dock{padding-left:13px;padding-right:13px}.desk-tabs button{font-size:13px}.desk-top{font-size:12px}.desk-figure figcaption{font-size:12px}.desk-detail h2{font-size:22px}}

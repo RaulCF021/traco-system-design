@@ -76,13 +76,13 @@ function diagram(graph,run) {
   levels.forEach((level,col)=>level.forEach((n,row)=>pos.set(n.id,{x:col*174+2,y:height/2+(row-(level.length-1)/2)*72})));
   for(const e of graph.edges) {
     const a=pos.get(e.from),b=pos.get(e.to),x=a.x+138,end=b.x-3,mid=(x+end)/2;
-    svg.append(s('path',{d:'M '+x+' '+a.y+' C '+mid+' '+a.y+' '+mid+' '+b.y+' '+end+' '+b.y,fill:'none',stroke:'#47685e','stroke-width':2}));
-    svg.append(s('path',{d:'m '+(end-5)+' '+(b.y-4)+' 5 4 -5 4',fill:'none',stroke:'#47685e','stroke-width':2}));
+    svg.append(s('path',{d:'M '+x+' '+a.y+' C '+mid+' '+a.y+' '+mid+' '+b.y+' '+end+' '+b.y,fill:'none',stroke:'#a8a5b5','stroke-width':2}));
+    svg.append(s('path',{d:'m '+(end-5)+' '+(b.y-4)+' 5 4 -5 4',fill:'none',stroke:'#a8a5b5','stroke-width':2}));
   }
   for(const n of graph.nodes) {
     const {x,y}=pos.get(n.id), measure=run?.nodes[n.id];
     const label=n.type==='storage'?'Object storage':catalog[n.type].name;
-    svg.append(s('rect',{x,y:y-25,width:137,height:50,rx:6,fill:measure?.utilization>1?'#ffe4a9':'#fffef6',stroke:measure?.utilization>1?'#a5660b':'#83988a'}));
+    svg.append(s('rect',{x,y:y-25,width:137,height:50,rx:6,fill:measure?.utilization>1?'#573931':'#34333e',stroke:measure?.utilization>1?'#fa785b':'#858294'}));
     svg.append(s('text',{x:x+9,y:y-3,class:'ex-svg-name'},label));
     svg.append(s('text',{x:x+9,y:y+14,class:'ex-svg-data'},measure ? format(measure.demand)+' req/s' : '×'+n.replicas+' '+(n.replicas===1?'instância':'instâncias')));
   }
@@ -95,7 +95,16 @@ export function mountExperiments(container) {
     const link=document.createElement('link');link.rel='stylesheet';link.href=css;link.dataset.tracoExperiments='';document.head.append(link);
   }
   const root=make('section','ex-lab');container.replaceChildren(root);
-  root.innerHTML='<div class="ex-setup"><div><label>Experimento<select class="ex-scenario"></select></label><p class="ex-note"></p></div><div class="ex-config"><label>Carga de entrada (req/s)<input class="ex-load" type="number" min="1" step="1" required></label><label><span class="ex-knob-label"></span><select class="ex-knob"></select></label></div></div><div class="ex-pair"></div><form class="ex-predict"><fieldset><legend></legend><div class="ex-options"></div></fieldset><button type="submit" class="run">Comparar resultados</button></form><div class="ex-results" aria-live="polite"></div>';
+  root.innerHTML = `
+    <div class="ex-stage">
+      <div class="ex-setup"><label>Experimento<select class="ex-scenario"></select></label><p class="ex-note"></p></div>
+      <div class="ex-pair"></div>
+    </div>
+    <div class="ex-dock">
+      <div class="ex-config"><label>Carga de entrada (req/s)<input class="ex-load" type="number" min="1" step="1" required></label><label><span class="ex-knob-label"></span><select class="ex-knob"></select></label></div>
+      <form class="ex-predict"><fieldset><legend></legend><div class="ex-options"></div></fieldset><button type="submit" class="run">Comparar resultados</button></form>
+    </div>
+    <div class="ex-results" aria-live="polite"></div>`;
   const $=q=>root.querySelector(q);
   const scenario=$('.ex-scenario'),knob=$('.ex-knob'),load=$('.ex-load'),form=$('form'),results=$('.ex-results');
   for(const [key,entry] of Object.entries(scenarios)) scenario.add(new Option(entry.title,key));
@@ -147,4 +156,3 @@ export function mountExperiments(container) {
   select();
   return {destroy(){root.remove();}};
 }
-

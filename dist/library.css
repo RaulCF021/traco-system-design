@@ -38,3 +38,20 @@
 .lib-figure-link .lib-figure{display:block;width:100%;max-width:100%}
 .lib-figure-link span{position:absolute;right:4px;bottom:4px;background:#fff;color:var(--lib-link);border:1px solid #dadada;border-radius:2px;padding:1px 3px;font:13px/1.2 Arial,sans-serif}
 @media(max-width:420px){.lib-figure-link{width:105px}}
+.lib{--lib-ink:#f3f2fc;--lib-muted:#c7c4d0;--lib-rule:#484653;--lib-link:#ffa18a;max-width:1190px;padding:0;background:#25242d;color:var(--lib-ink)}
+.lib-head{padding:24px clamp(18px,3vw,38px) 26px;background:#30303a radial-gradient(#50505c 1px,transparent 1px) 0 0/15px 15px;border-bottom:3px solid #fa785b}
+.lib-meta,.lib-head p{font:13px/1.5 Consolas,monospace;color:#dfddea}
+.lib-head h1{margin:8px 0;font:700 clamp(30px,3.4vw,46px)/1.08 "Segoe UI",Arial,sans-serif;letter-spacing:-.055em;color:#f3f2fc}
+.lib-resume{margin-top:17px;background:#f58369;color:#231b1b;padding:7px 12px;border-radius:4px;font-weight:600}
+.lib-body{padding:0 clamp(16px,3vw,38px) 28px}
+.lib-toolbar{margin:0;border:0;flex-wrap:wrap;justify-content:space-between}
+.lib-toolbar h2{font:650 22px/1.2 "Segoe UI",Arial,sans-serif;letter-spacing:-.035em}
+.lib-search{max-width:365px;background:#201f26;border-color:#655f72}
+.lib-search input,.lib-search input::placeholder{color:#e1ddea}
+.lib-search:focus-within{outline-color:#f58369}
+.lib-group li+li{border-color:#383642}.lib-group-head h2{color:#f3f2fc}
+.lib-lesson:hover,.lib-lesson:focus-visible{background:#33313d}
+.lib-icon{background:#302e39;border-color:#565260}.lib-icon .motif{color:#e7c5b9}
+.lib-figure-link .lib-figure{border-color:#5e5862}
+.lib-figure-link span{background:#25242d;border-color:#685e65}
+@media(max-width:620px){.lib-search{max-width:none}.lib-toolbar{display:grid;justify-content:stretch}.lib-toolbar h2{margin-bottom:3px}.lib-count:empty{display:none}}

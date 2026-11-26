@@ -1,9 +1,77 @@
-.tg-page{--tg-blue:#173e40;--tg-line:#cbccbb;--tg-ink:#203d39;--tg-muted:#50615b;--tg-mono:'IBM Plex Mono',Consolas,monospace;color:var(--tg-ink);width:100%}
-.tg-top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(20px,2.6vw,36px);position:relative;isolation:isolate;overflow:hidden;background-color:#173e40;background-image:linear-gradient(90deg,#a8c5b919 1px,transparent 1px),linear-gradient(#a8c5b919 1px,transparent 1px);background-size:25px 25px;border:1px solid #274a47;border-radius:10px;color:#fff8e4;box-shadow:inset 0 -4px 0 #a68848}.tg-eyebrow,.tg-kicker,.tg-label,.tg-observation small{font:650 11px/1.45 var(--tg-mono);letter-spacing:.065em;text-transform:uppercase}.tg-eyebrow{color:#f8c662}.tg-kicker{color:#526059}.tg-top:after{content:"";position:absolute;z-index:-1;pointer-events:none;right:6%;top:-120px;width:370px;height:370px;border-radius:50%;background:repeating-radial-gradient(circle at center,transparent 0 32px,#abc8b92e 33px 34px,transparent 35px 53px);opacity:.65}.tg-title{margin:6px 0;line-height:1.12;font-size:clamp(24px,2.8vw,40px);letter-spacing:-.045em}.tg-lead{margin:0;color:#e0e9d9;max-width:67ch;font-size:15px;line-height:1.5}
-.tg-reset,.tg-run{font-family:inherit;font-size:13px;cursor:pointer;line-height:1.3;font-weight:650}.tg-reset{align-self:flex-start;border:1px solid #73958a;background:#244b49;padding:8px 13px;border-radius:5px;color:#fff8e1}.tg-reset:hover{background:#385c52}.tg-run{background:#f4b73e;border:1px solid #b78834;color:#263b32;border-radius:5px;padding:10px 15px}.tg-run:hover:enabled{background:#ffd273}.tg-run:disabled{background:#e9e8dc;color:#5c6259;border-color:#d3d3c4;cursor:default}.tg-page button:focus-visible{outline:3px solid #e57e29;outline-offset:3px}
-.tg-progress{display:flex;flex-wrap:wrap;list-style:none;gap:6px 16px;padding:11px 2px;margin:0}.tg-progress li{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#5a655b}.tg-progress li span{display:inline-grid;place-items:center;font:650 10px/1 var(--tg-mono);width:19px;height:19px;border-radius:50%;border:1px solid #bfc5b5;background:#f5f3ea}.tg-progress .tg-now{font-weight:700;color:var(--tg-blue)}.tg-progress .tg-now span{color:#243b33;background:#f4b73e;border-color:#b78c3f}.tg-progress .tg-past span{color:#fff8e7;background:#345951;border-color:#345951}
-.tg-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(208px,265px);gap:15px;align-items:start}.tg-bench,.tg-rail{min-width:0;display:grid;gap:12px}.tg-lesson,.tg-panel{background:#fffdf3;border-radius:7px;border:1px solid var(--tg-line);padding:16px 18px;box-shadow:0 2px 0 #dad9c967}.tg-lesson{position:relative;border-left:5px solid #e5ad46;background:linear-gradient(115deg,#fff5d9,#fffdf3 70%)}.tg-complete{border-left-color:#347551;background:#edf3e9}.tg-lesson h3,.tg-panel h3{font-size:20px;line-height:1.2;letter-spacing:-.03em;margin:5px 0}.tg-instruction,.tg-why,.tg-hint{font-size:14px;line-height:1.52;color:var(--tg-ink);margin:8px 0}.tg-instruction{font-weight:550}.tg-why,.tg-hint{color:var(--tg-muted)}.tg-why{margin-bottom:0}.tg-panel .tg-label{color:var(--tg-muted)}.tg-load{color:#173e40;border-top:1px dashed #aebdae;border-bottom:1px dashed #aebdae;padding:8px 0;font:650 clamp(23px,2.1vw,33px)/1.25 var(--tg-mono);margin:12px 0;letter-spacing:-.05em}.tg-panel .tg-run{width:100%}.tg-log{padding:0;margin:10px 0 0;list-style:none}.tg-log-empty,.tg-observation span,.tg-observation b,.tg-status{font-size:12px;line-height:1.5}.tg-log-empty,.tg-observation span{color:var(--tg-muted)}.tg-observation{display:grid;gap:2px;padding:9px 0;border-top:1px solid var(--tg-line)}.tg-observation strong{font-size:14px}.tg-observation small{font-size:9px;color:var(--tg-muted)}.tg-observation b{color:#255f45}.tg-failed b{color:#974727}.tg-status{margin:10px 0;font-weight:600;color:#34574b}.tg-status:empty{display:none}
-@media(max-width:760px){.tg-body{grid-template-columns:minmax(0,1fr)}.tg-rail{grid-template-columns:repeat(2,minmax(0,1fr))}.tg-progress{gap:6px 9px}.tg-progress li{font-size:11px}.tg-top{align-items:flex-start;padding:16px}.tg-top .tg-reset{font-size:12px;padding:6px 9px}.tg-lesson,.tg-panel{padding:12px 14px}}
-@media(max-width:480px){.tg-top{flex-wrap:wrap;gap:8px}.tg-rail{grid-template-columns:minmax(0,1fr)}.tg-progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:12px 2px}}
-.tg-bench,.tg-host{min-width:0}.tg-bench{grid-template-columns:minmax(0,1fr)}.tg-host .te-editor{width:100%}
-
+/* The live topology occupies the stage. Instructions, load controls and observations share the dock. */
+.tg-page {
+  --tg-ink:#f3f2fc;--tg-muted:#c7c4d0;--tg-line:#514e5e;--tg-accent:#f58369;
+  --tg-mono:"IBM Plex Mono",Consolas,monospace;
+  display:grid;
+  grid-template-columns:minmax(0,1.22fr) minmax(240px,.78fr);
+  color:var(--tg-ink);
+  background:#25242d;
+  border:1px solid var(--tg-line);
+  border-radius:7px;
+  overflow:hidden;
+}
+.tg-body,.tg-bench {display:contents}
+.tg-top {
+  grid-column:1 / -1;grid-row:1;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:20px;
+  padding:clamp(15px,2.1vw,27px);background:#282730;
+}
+.tg-top>div {max-width:760px}
+.tg-eyebrow,.tg-kicker,.tg-label,.tg-observation small {
+  font:600 11px/1.45 var(--tg-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--tg-muted);
+}
+.tg-eyebrow,.tg-kicker {color:#ffad96}
+.tg-title,.tg-lesson h3,.tg-panel h3 {font-family:"Segoe UI",Arial,sans-serif;color:var(--tg-ink);font-weight:680}
+.tg-title {margin:5px 0;font-size:clamp(28px,3vw,43px);line-height:1.07;letter-spacing:-.055em}
+.tg-lead,.tg-instruction,.tg-why,.tg-hint {font-size:14px;line-height:1.52}
+.tg-lead {margin:0;color:var(--tg-muted)}
+.tg-reset,.tg-run {min-height:34px;font:650 13px/1.3 "Segoe UI",Arial,sans-serif;border-radius:4px;padding:8px 13px}
+.tg-reset {color:var(--tg-ink);background:#302e39;border:1px solid #726d80}
+.tg-reset:hover {background:#484551}
+.tg-run {background:var(--tg-accent);border:1px solid var(--tg-accent);color:#211c20;min-height:39px}
+.tg-run:hover:enabled {background:#ffa48c}
+.tg-run:disabled {background:#413f4b;color:#cecad5;border-color:#565360;cursor:default}
+.tg-page button:focus-visible {outline:3px solid #ffb198;outline-offset:3px}
+.tg-host {min-width:0;grid-column:1 / -1;grid-row:2}
+.tg-host .te-editor {width:100%;border-width:1px 0 0;border-radius:0}
+.tg-host .te-viewport {height:clamp(203px,28vh,330px)}
+.tg-progress {
+  grid-column:1 / -1;grid-row:3;
+  display:flex;gap:6px;flex-wrap:wrap;list-style:none;margin:0;
+  border-top:3px solid #fa785b;padding:16px clamp(14px,2vw,25px) 4px;
+}
+.tg-progress li {color:#d0cdd7;display:inline-flex;align-items:center;gap:6px;border:1px solid #625f6e;padding:4px 8px;border-radius:3px;font-size:12px}
+.tg-progress li span {font:600 10px/1 var(--tg-mono)}
+.tg-progress .tg-now {color:#241c20;background:var(--tg-accent);border-color:var(--tg-accent);font-weight:700}
+.tg-progress .tg-past {color:#c6e9d5;border-color:#5a7068}
+.tg-lesson,.tg-rail {min-width:0;align-self:start;padding:14px clamp(14px,2vw,25px) 20px}
+.tg-lesson {grid-column:1;grid-row:4}
+.tg-rail {grid-column:2;grid-row:4;display:grid;gap:14px}
+.tg-panel {border-left:1px solid var(--tg-line);padding-left:16px}
+.tg-lesson h3,.tg-panel h3 {font-size:21px;line-height:1.18;letter-spacing:-.035em;margin:6px 0}
+.tg-instruction {font-weight:600;margin:8px 0}
+.tg-why,.tg-hint {color:var(--tg-muted);margin:6px 0}
+.tg-load {font:650 23px/1.3 var(--tg-mono);letter-spacing:-.04em;color:var(--tg-ink);margin:5px 0}
+.tg-panel .tg-run {margin-top:6px}
+.tg-log {margin:6px 0 0;padding:0;list-style:none}
+.tg-log-empty,.tg-observation span,.tg-observation b,.tg-status {font-size:12px;line-height:1.5}
+.tg-log-empty,.tg-observation span {color:var(--tg-muted)}
+.tg-observation {display:grid;gap:2px;padding:8px 0;border-top:1px solid var(--tg-line)}
+.tg-observation strong {font-size:14px}.tg-observation small{font-size:10px}
+.tg-observation b {color:#a0e6c0}.tg-failed b{color:#ffad96}
+.tg-status {grid-column:1 / -1;grid-row:5;margin:0;padding:9px clamp(14px,2vw,25px);border-top:1px solid var(--tg-line);color:#e6e1ec;background:#302d39}
+.tg-status:empty {display:none}
+@media(max-width:720px) {
+  .tg-page {grid-template-columns:minmax(0,1fr)}
+  .tg-lesson {grid-column:1;grid-row:4;padding-bottom:4px}
+  .tg-rail {grid-column:1;grid-row:5;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .tg-status {grid-row:6}
+  .tg-panel {padding-left:8px}
+}
+@media(max-width:480px) {
+  .tg-top {flex-wrap:wrap;gap:7px}
+  .tg-title {font-size:27px}
+  .tg-progress {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+  .tg-progress li {font-size:11px;padding:5px}
+  .tg-rail {grid-template-columns:minmax(0,1fr)}
+}
