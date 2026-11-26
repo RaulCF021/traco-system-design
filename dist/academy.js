@@ -16,11 +16,42 @@ function status(l,saved){
  return solved&&read?'Módulo concluído':solved?'Missão concluída':read?'Previsão resolvida':saved.positions?.[l.id]!==undefined?'Em estudo':'Disponível';
 }
 export function academy(app,saved){
- const next=lessons.find(l=>!saved.knowledge?.[l.id]||!saved.completed[l.id])||lessons[0];
- const progress=lessons.reduce((sum,l)=>sum+Number(!!saved.knowledge?.[l.id])+Number(!!saved.completed[l.id]),0);
- app.innerHTML='<div class="academy-intro"><div class="academy-copy"><div class="over"><i></i>Caderno de System Design</div><h1>Arquitetura <br>de <em>sistemas.</em></h1><p>Siga uma consulta até o banco. Descubra onde a fila cresce. Depois, redesenhe o caminho.</p><div class="academy-actions">'+action(progress?'Continuar a trilha':'Abrir a primeira aula','aula/'+next.id)+action('Tutorial do editor','tutorial','ghost')+'</div></div><figure class="plate"><img src="./press.svg" alt="Esquema de um balanceador ligado a servidores e a um banco de dados"><figcaption>Prancha de estudo · Infraestrutura de uma consulta</figcaption></figure></div>'+
- '<div class="academy-layout"><section><div class="course-heading"><div><div class="micro">Índice do caderno</div><h2>Aulas e missões</h2></div><span>6 módulos</span></div><div class="module-list">'+lessons.map((l,i)=>'<a class="module-row theme-'+i+'" href="#aula/'+l.id+'"><span class="tile">'+motif(i)+'</span><div><small>Módulo '+String(i+1).padStart(2,'0')+' · '+l.level+'</small><h3>'+course[l.id].title+'</h3><p>'+l.subtitle+'</p></div><span class="module-state">'+status(l,saved)+'</span><span aria-hidden="true">›</span></a>').join('')+'</div></section>'+
- '<aside class="study-side"><section><div class="micro">Seu progresso</div><h2>'+progress+' <small>/ 12 etapas</small></h2><progress value="'+progress+'" max="12" aria-label="Etapas concluídas"></progress><p>Cada módulo tem uma previsão para resolver e uma missão para completar no grid.</p></section><section><div class="micro">Bancada de experimentos</div><h3>Uma variável por vez.</h3><p>Compare duas arquiteturas sob a mesma carga. Observe também como filas e balanceadores afetam o resultado.</p>'+action('Abrir experimentos','experiments','textlink')+'</section></aside></div>';
+ const groups=[
+  {title:'Fundamentos',ids:['catalogo','leituras'],note:'Caminho de leitura, persistência e cache.'},
+  {title:'Distribuição de tráfego',ids:['balanceamento','netflix'],note:'Escala horizontal e entrega de conteúdo na borda.'},
+  {title:'Operação em escala',ids:['spotify','orcamento'],note:'Consumidores assíncronos, gargalos e orçamento.'}
+ ];
+ const normalize=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+ const next=lessons.find(l=>!saved.knowledge?.[l.id]||!saved.completed[l.id]);
+ const finished=lessons.filter(l=>saved.knowledge?.[l.id]&&saved.completed[l.id]).length;
+ const isMission=next&&saved.knowledge?.[next.id]&&!saved.completed[next.id];
+ const jump=next?'<a class="lib-resume" href="#'+(isMission?'missao/':'aula/')+next.id+'">'+(isMission?'Continuar na missão':saved.positions?.[next.id]!==undefined?'Retomar aula':'Próxima aula')+'<strong>'+next.title+'</strong><span aria-hidden="true">→</span></a>':'<a class="lib-resume" href="#sandbox">Continuar no modo livre <span aria-hidden="true">→</span></a>';
+ app.innerHTML='<div class="lib"><div class="lib-head"><h1>Currículo de System Design</h1><p>'+lessons.length+' módulos <span aria-hidden="true">·</span> '+finished+' concluído'+(finished===1?'':'s')+'</p></div>'+jump+
+ '<div class="lib-toolbar"><label class="lib-search"><svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg><input type="search" aria-label="Buscar no currículo" placeholder="Buscar aula, tema ou componente"></label><span class="lib-count" aria-live="polite"></span></div><div class="lib-groups"></div></div>';
+ const results=app.querySelector('.lib-groups'),count=app.querySelector('.lib-count'),input=app.querySelector('input');
+ function render(){
+  const words=normalize(input.value.trim()).split(/\s+/).filter(Boolean);
+  let found=0;
+  results.innerHTML=groups.map((group,g)=>{
+   const items=group.ids.map(id=>lessons.find(l=>l.id===id)).filter(l=>{
+    const content=normalize([group.title,l.title,l.subtitle,l.concept,l.brief,course[l.id].title,...l.graph.nodes.flatMap(n=>[n.type,catalog[n.type]?.name])].join(' '));
+    return words.every(w=>content.includes(w));
+   });
+   if(!items.length)return '';
+   found+=items.length;
+   return '<section class="lib-group"><div class="lib-group-head"><div><h2>'+group.title+'</h2><p>'+group.note+'</p></div>'+(g===0?'<a class="lib-figure-link" href="./press.svg" target="_blank" rel="noopener" aria-label="Ampliar desenho da arquitetura em uma nova aba"><img class="lib-figure" src="./press.svg" alt="Desenho de balanceador, servidores e banco de dados"><span aria-hidden="true">↗</span></a>':'')+'</div><ul>'+items.map(l=>{
+    const i=lessons.indexOf(l),state=status(l,saved);
+    return '<li><a class="lib-lesson" href="#aula/'+l.id+'"><span class="lib-icon">'+motif(i)+'</span><span class="lib-description"><strong>'+course[l.id].title+'</strong><span>'+l.title+' · '+l.minutes+' min</span></span><small>'+state+'</small><span class="lib-arrow" aria-hidden="true">→</span></a></li>';
+   }).join('')+'</ul></section>';
+  }).join('');
+  count.textContent=words.length?found+' módulo'+(found===1?'':'s'):'';
+  if(!found){
+   results.innerHTML='<div class="lib-empty"><p>Nenhuma aula encontrada.</p><button type="button">Limpar busca</button></div>';
+   results.querySelector('button').onclick=()=>{input.value='';render();input.focus()};
+  }
+ }
+ input.addEventListener('input',render);
+ render();
 }
 function baseline(container,lesson){
  const result=simulate(lesson.graph,lesson.load);
@@ -57,4 +88,3 @@ export function reader(app,l,saved,save){
  }
  display();
 }
-

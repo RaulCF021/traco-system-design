@@ -1,0 +1,16 @@
+:root{--paper:#fff;--ink:#24282e;--muted:#59616b;--line:#d9dce1;--blue:#244eac;--display:"Segoe UI",Arial,sans-serif}
+body{background:white;color:var(--ink);font-family:"Segoe UI",Arial,sans-serif}
+.site-shell{background:#f6f7f8;border:0;border-right:1px solid #dbdee2}
+.site-shell .bar{display:flex;align-items:stretch;gap:0;min-height:0;padding:22px 12px;width:100%;max-width:none}
+.site-shell .brand{font:720 28px/1 "Segoe UI",Arial,sans-serif;letter-spacing:-1.6px;gap:9px;color:#20252d;margin:0 9px 30px}
+.site-shell .stamp{width:30px;height:30px;margin:0}
+.site-shell nav{display:flex;gap:2px;align-self:auto;overflow:visible;white-space:normal;height:auto}
+.site-shell nav button{display:flex;align-items:center;gap:11px;width:100%;border:0;border-radius:5px;background:none;color:#414852;text-align:left;font-size:14px;font-weight:500;padding:9px 10px;min-height:38px}
+.site-shell nav button:hover,.site-shell .xp:hover{background:#e8ebef}
+.site-shell nav button.active{background:#e2e8f5;color:#193e81;font-weight:650}
+.site-shell nav svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+.nav-label{font-size:12px;font-weight:650;color:#58606a;padding:12px 10px 5px}
+.site-shell .xp{display:flex;align-items:center;justify-content:space-between;margin:auto 0 0;border:0;border-top:1px solid #d7dbe1;background:none;color:#404852;border-radius:0;font:13px "Segoe UI",Arial,sans-serif;padding:15px 8px}
+.site-shell .xp span{color:#404852}.site-shell #menu-toggle{display:none}
+@media(min-width:1101px){.site-shell{position:fixed;inset:0 auto 0 0;width:185px;z-index:5}.site-shell .bar{height:100%;flex-direction:column}.site-shell nav{flex-direction:column}body{padding-left:185px}main{max-width:1500px;padding:30px clamp(24px,3vw,54px) 60px}}
+@media(max-width:1100px){.site-shell{border:0;border-bottom:1px solid #dadde2}.site-shell .bar{flex-direction:row;align-items:center;flex-wrap:wrap;padding:10px 16px;gap:8px}.site-shell .brand{margin:0 auto 0 0}.site-shell #menu-toggle{display:block;border:1px solid #c6cbd2;background:white;border-radius:5px;padding:6px 12px}.site-shell nav{display:none;order:3;flex-basis:100%;flex-direction:column}.site-shell.expanded nav{display:flex}.site-shell .xp{margin:0;order:0;border:0;gap:6px;padding:5px}.site-shell .brand{font-size:22px}.site-shell .stamp{width:25px;height:25px}}

@@ -1,5 +1,5 @@
 # Traço
 
-A escola usa o formato de um caderno de engenharia. O índice dá acesso às aulas e a prancha isométrica apresenta as peças que reaparecem no editor. As páginas de leitura usam Fraunces nos títulos, texto corrido sem serifa e números monoespaçados nos instrumentos. Papel quente, tinta verde-petróleo e ocre separam leitura, operação e anotações.
+A navegação do site funciona como um índice de documentação. Aulas e tutorial ficam no grupo Estudo. Missões, experimentos e editor livre ficam no Laboratório. No desktop o índice ocupa a lateral esquerda. Em telas menores o botão Menu abre os mesmos destinos.
 
-As bancadas mantêm as conexões, os controles de carga e as unidades visíveis. Cada missão vale 100 XP uma vez. O navegador preserva progresso e desenhos.
+A interface usa texto sem serifa, fundo branco e controles neutros. As pranchas e os diagramas preservam a linguagem de desenho de engenharia. O conteúdo da aula e o trabalho no editor têm prioridade sobre introduções e ilustrações de capa.

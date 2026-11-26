@@ -24,7 +24,15 @@ function persist(){saved.drafts[current().id]={graph,load};save()}
 function hero(label,title,sub){return '<div class="hero"><div class="heroCopy"><div class="over"><i></i>'+esc(label)+'</div><h1>'+esc(title)+'</h1><p>'+esc(sub)+'</p></div></div>'}
 function selectLesson(id){selected=lessons.find(x=>x.id===id)||lessons[0];saved.selected=selected.id;save();navigate('lab')}
 function navigate(v){if(location.hash==='#'+v) render(v);else location.hash=v}
+const menu=document.querySelector('#menu-toggle');
+function setMenu(open){
+  menu.setAttribute('aria-expanded',String(open));
+  document.querySelector('.site-shell').classList.toggle('expanded',open);
+}
+menu.onclick=()=>setMenu(menu.getAttribute('aria-expanded')==='false');
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&menu.getAttribute('aria-expanded')==='true'){setMenu(false);menu.focus()}});
 function render(v){
+  setMenu(false);
   const [route,id]=v.split('/');
   if(route==='missao'||route==='aula'){
     selected=lessons.find(l=>l.id===id)||lessons[0];

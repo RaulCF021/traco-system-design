@@ -1,0 +1,40 @@
+.lib{--lib-ink:#23262a;--lib-muted:#555b63;--lib-rule:#dedfe2;--lib-link:#275cc5;color:var(--lib-ink);max-width:1060px;margin:0 auto;padding:12px 0 36px;font-family:Inter,"Segoe UI",Arial,sans-serif}
+.lib h1,.lib h2,.lib p,.lib ul{margin:0}
+.lib-head{padding-bottom:18px}
+.lib-head h1{font:650 clamp(27px,3vw,43px)/1.12 Inter,"Segoe UI",Arial,sans-serif;letter-spacing:-.05em}
+.lib-head p,.lib-group-head p,.lib-count{color:var(--lib-muted);font-size:14px;line-height:1.55}
+.lib-head p{margin-top:8px}.lib-head p span{margin:0 3px}
+.lib-resume{display:inline-flex;align-items:baseline;gap:8px;flex-wrap:wrap;color:var(--lib-link);font-size:14px;text-decoration:none;padding:0 0 4px;line-height:1.5}
+.lib-resume:hover strong,.lib-resume:focus-visible strong{text-decoration:underline;text-underline-offset:3px}
+.lib-toolbar{display:flex;align-items:center;gap:16px;border-top:1px solid var(--lib-rule);margin:18px 0 0;padding:19px 0}
+.lib-search{display:flex;align-items:center;gap:9px;max-width:440px;width:100%;border:1px solid #c4c7cc;border-radius:5px;color:var(--lib-muted);padding:0 12px;background:#fff}
+.lib-search:focus-within{border-color:var(--lib-link);outline:2px solid #c6d5f5;outline-offset:1px}
+.lib-search svg{flex:none}
+.lib-search input{min-width:0;width:100%;height:39px;padding:0;border:none;background:none;color:var(--lib-ink);outline:none;font:400 14px/1.45 inherit}
+.lib-search input:focus-visible{outline:none}
+.lib-count{white-space:nowrap}
+.lib-group{padding:18px 0 8px;border-top:1px solid var(--lib-rule)}
+.lib-group-head{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:11px}
+.lib-group-head h2{font:650 clamp(19px,2vw,24px)/1.24 Inter,"Segoe UI",Arial,sans-serif;letter-spacing:-.035em;color:var(--lib-ink)}
+.lib-group-head p{margin-top:4px}
+.lib-figure{width:clamp(145px,20vw,215px);height:auto;max-width:38%;border:1px solid #d6d5cf;border-radius:3px}
+.lib-group ul{list-style:none;padding:0}
+.lib-group li+li{border-top:1px solid #edeef0}
+.lib-lesson{display:grid;grid-template-columns:48px minmax(0,1fr) auto 20px;gap:14px;align-items:center;min-height:67px;padding:8px 5px;text-decoration:none;color:var(--lib-ink);border-radius:3px}
+.lib-lesson:hover,.lib-lesson:focus-visible{background:#f4f5f7}
+.lib-lesson:hover strong,.lib-lesson:focus-visible strong{color:var(--lib-link)}
+.lib-icon{display:grid;place-items:center;border:1px solid var(--lib-rule);border-radius:4px;width:46px;height:37px;background:#fafafa}
+.lib-icon .motif{width:36px;height:26px;opacity:1;color:#51565c;stroke:currentColor;fill:none;stroke-width:2}
+.lib-icon .motif path{stroke:currentColor;fill:none;stroke-width:2}
+.lib-description{display:grid;gap:3px}
+.lib-description strong{font-size:16px;line-height:1.35;font-weight:620;letter-spacing:-.018em}
+.lib-description>span,.lib-lesson small{color:var(--lib-muted);font-size:13px;line-height:1.4}
+.lib-arrow{color:var(--lib-link);font-size:18px}
+.lib-empty{padding:25px 0;border-top:1px solid var(--lib-rule)}
+.lib-empty button{background:none;border:0;color:var(--lib-link);padding:9px 0;font-weight:600}
+@media(max-width:620px){.lib-group-head{gap:10px}.lib-lesson{grid-template-columns:38px minmax(0,1fr) 15px;column-gap:10px;row-gap:2px}.lib-icon{width:37px;height:32px;grid-row:span 2}.lib-lesson small{grid-column:2;font-size:12px}.lib-arrow{grid-column:3;grid-row:1 / span 2}.lib-figure{max-width:37%}.lib-toolbar{gap:8px}.lib-head h1{max-width:18em}}
+@media(max-width:420px){.lib-toolbar{display:grid}.lib-count:empty{display:none}.lib-figure{width:105px}.lib-group-head p{font-size:13px}.lib-resume{gap:5px}}
+.lib-figure-link{position:relative;display:block;width:clamp(145px,20vw,215px);max-width:38%;line-height:0;flex-shrink:0;cursor:zoom-in}
+.lib-figure-link .lib-figure{display:block;width:100%;max-width:100%}
+.lib-figure-link span{position:absolute;right:4px;bottom:4px;background:#fff;color:var(--lib-link);border:1px solid #dadada;border-radius:2px;padding:1px 3px;font:13px/1.2 Arial,sans-serif}
+@media(max-width:420px){.lib-figure-link{width:105px}}
