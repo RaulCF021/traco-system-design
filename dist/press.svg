@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 255" role="img" aria-labelledby="title desc">
+  <title id="title">Do balanceador ao banco de dados</title>
+  <desc id="desc">Desenho técnico em perspectiva de um balanceador com três saídas conectadas a servidores e de uma conexão entre os servidores e um banco de dados.</desc>
+  <defs>
+    <pattern id="grid" patternUnits="userSpaceOnUse" width="16" height="16"><path d="M16 0H0V16" fill="none" stroke="#607869" stroke-width=".55" opacity=".24"/></pattern>
+    <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(25)"><path d="M0 0V5" stroke="#254847" stroke-width=".8" opacity=".55"/></pattern>
+    <pattern id="dense" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(27)"><path d="M0 0V3" stroke="#254847" stroke-width=".85" opacity=".62"/></pattern>
+    <pattern id="dots" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".55" fill="#173e40" opacity=".5"/></pattern>
+    <g id="rack">
+      <path d="M0 16 43 0 103 22 60 38Z" fill="#f4ebd3"/>
+      <path d="M0 16 60 38V51L0 29Z" fill="#d9d2ae"/>
+      <path d="M0 16 60 38V51L0 29Z" fill="url(#dots)" stroke="none"/>
+      <path d="M60 38 103 22V35L60 51Z" fill="#cfcaab"/>
+      <path d="M60 38 103 22V35L60 51Z" fill="url(#dense)" stroke="none"/>
+      <path d="m5 21 4 1.5v3L5 24Zm9 3.3 4 1.5v3l-4-1.5Z" fill="#bd8336" stroke-width=".7"/>
+      <path d="m24 28 22 8v3l-22-8Z" fill="#214443" stroke="none"/>
+      <path d="m49 37.5 6 2.2" stroke-width="1.5"/>
+      <path d="m12 16 26-10m-20 12 27-10m-16 14 26-10m-19 12 23-9" fill="none" opacity=".42" stroke-width=".65"/>
+      <path d="m70 38 21-8" fill="none" stroke-width="1.2"/>
+    </g>
+  </defs>
+  <rect width="500" height="255" rx="2" fill="#f1e6c9"/>
+  <rect width="500" height="255" fill="url(#grid)"/>
+  <g fill="none" stroke="#678071" stroke-width=".75" stroke-dasharray="3 4" opacity=".66">
+    <path d="m13 177 126 46m-60-78 173 63m-41-28 218-80m-58 89 101-37M87 33v148m135-144v99m176-102v139"/>
+  </g>
+  <g stroke="#173e40" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Three separately routed output lines terminate at the stacked machines. -->
+    <g fill="none" stroke-width="5.8">
+      <path d="m101 155 34 12 36-14 15 5m-73-8 26 9 27-11v-11l20-7m-61 14 15 6 17-7v-30l30-11"/>
+      <path d="m294 139 27 10 24-9 21 8"/>
+    </g>
+    <g fill="none" stroke="#d6aa59" stroke-width="2.5">
+      <path d="m101 155 34 12 36-14 15 5m-73-8 26 9 27-11v-11l20-7m-61 14 15 6 17-7v-30l30-11"/>
+      <path d="m294 139 27 10 24-9 21 8"/>
+    </g>
+    <g fill="#173e40" stroke-width=".5"><path d="m145 159 7-.5-4.6 5Zm22-51 7-.5-4.8 5Zm161 36.5 8-.6-5.1 5.2Z"/></g>
+
+    <!-- Input appliance, sockets, and a fan-out etched into its lid. -->
+    <g stroke-width="1.5">
+      <path d="m32 134 52-20 59 21-52 22Z" fill="#f7ecd0"/>
+      <path d="m32 134 59 23v20l-59-22Z" fill="#e2d6ad"/>
+      <path d="m91 157 52-22v20l-52 22Z" fill="#cac7aa"/>
+      <path d="m91 157 52-22v20l-52 22Z" fill="url(#hatch)" stroke="none"/>
+      <path d="m47 136 19 7 9-3m-9 3 8 3 11-4m-19 1 1-5 10-4" fill="none" stroke-width="1.1"/>
+      <path d="m89 126 31 11m-35-9 31 11m-35-9 31 11" fill="none" opacity=".56" stroke-width=".8"/>
+      <path d="m38 142 24 9v6l-24-9Z" fill="#1c4141"/>
+      <path d="m68 153 5 2v4l-5-2Zm8 3 5 2v4l-5-2Z" fill="#ce933c" stroke-width=".7"/>
+      <path d="m99 158 6-2v5l-6 2Zm14-5 6-3v5l-6 3Zm14-6 6-2v5l-6 2Z" fill="#173e40" stroke-width=".8"/>
+    </g>
+
+    <!-- Rack chassis and staggered feet. -->
+    <path d="m193 158 48 19 66-25-59-20Z" fill="#75877a" fill-opacity=".22" stroke="none"/>
+    <g transform="translate(189 111)" stroke-width="1.5"><use href="#rack"/></g>
+    <g transform="translate(189 92)" stroke-width="1.5"><use href="#rack"/></g>
+    <g transform="translate(189 73)" stroke-width="1.5"><use href="#rack"/></g>
+    <path d="m204 158 0 4 5 2v-4m62-9v4l5-2v-4" fill="#173e40"/>
+    <path d="m195 81 42-16 57 21m-99-9v7m42-22v6m57 14v7" fill="none" stroke="#768777" stroke-width=".85"/>
+
+    <!-- Cylindrical storage appliance with inspection bands and a bolted lid. -->
+    <ellipse cx="397" cy="166" rx="43" ry="10" fill="#768777" fill-opacity=".2" stroke="none"/>
+    <path d="M356 87c0-8 17-15 39-15s40 7 40 15v62c0 9-18 16-40 16s-39-7-39-16Z" fill="#e1d6af" stroke-width="1.6"/>
+    <path d="M357 89q8 9 24 12v62q-19-4-24-13Z" fill="url(#hatch)" stroke="none"/>
+    <path d="M415 100q13-3 19-10v60q-6 7-19 11Z" fill="url(#dense)" stroke="none"/>
+    <g fill="none" stroke-width="1.3">
+      <path d="M356 105c0 9 17 15 39 15s40-6 40-15m-79 5c0 9 17 15 39 15s40-6 40-15"/>
+      <path d="M356 128c0 9 17 15 39 15s40-6 40-15m-79 5c0 9 17 15 39 15s40-6 40-15"/>
+    </g>
+    <ellipse cx="395.5" cy="87" rx="39.5" ry="15" fill="#eee2bf" stroke-width="1.6"/>
+    <ellipse cx="395.5" cy="86.8" rx="32.5" ry="10.8" fill="url(#hatch)" stroke-width=".75"/>
+    <ellipse cx="395.5" cy="86.8" rx="19" ry="6.5" fill="#eac775" stroke-width=".85"/>
+    <ellipse cx="395.5" cy="86.8" rx="8" ry="2.5" fill="#e1ad53" stroke-width=".75"/>
+    <g fill="#173e40" stroke="none"><circle cx="360" cy="86" r="1.1"/><circle cx="430" cy="86" r="1.1"/><circle cx="396" cy="74" r=".9"/><circle cx="396" cy="99.8" r="1.1"/></g>
+    <path d="m360 142 6 3v7l-6-3Z" fill="#173e40"/>
+  </g>
+  <g fill="none" stroke="#526d60" stroke-width=".85" stroke-linecap="round">
+    <path d="m66 173-11 24H25m204-123-17-25h-33m230 118 16 29h38"/>
+    <g fill="#bd8439"><circle cx="66" cy="173" r="1.8"/><circle cx="229" cy="74" r="1.8"/><circle cx="409" cy="167" r="1.8"/></g>
+  </g>
+  <g font-family="'Courier New', monospace" fill="#173e40" font-size="11" font-weight="bold" letter-spacing=".5">
+    <text x="25" y="214">BALANCEADOR</text>
+    <text x="177" y="43">SERVIDORES</text>
+    <text x="369" y="213">BANCO DE DADOS</text>
+  </g>
+  <g fill="none" stroke="#718274" stroke-width=".85" opacity=".7">
+    <path d="M10 17v-7h7m466 0h7v7m0 221v7h-7m-466 0h-7v-7"/>
+  </g>
+</svg>
