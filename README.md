@@ -8,7 +8,7 @@ Com Node.js 22 ou superior instalado, rode `npm start` na raiz do projeto e abra
 
 ## Estudar
 
-A entrada **Começar do zero** acompanha um pedido de faixas de um álbum. Em seguida, o guia apresenta as peças, a primeira montagem orienta cada ligação e a oficina **Como decidir** ensina a perguntar, medir e comparar alternativas. A carga e o requisito de atualização podem ser explorados na oficina. O menu **Praticar** reúne os desafios, os experimentos e o editor livre. O navegador guarda as etapas concluídas e os desenhos localmente.
+Escolha entre loja online, agenda, geração de documentos e entrega de mapas. Cada projeto combina perguntas de arquitetura, um desenho editável e experimentos com carga, custo e dependências. No guia de componentes, cada peça tem uma explicação e um ensaio editável. **Meus projetos** abre uma tela em branco para modelar outro problema e guardar seu próprio desenho. Os estudos de caso e os tutoriais ficam disponíveis separadamente.
 
 O simulador estima demanda, vazão, latência média, crescimento de fila e custo relativo. Capacidades e taxas de acerto são hipóteses didáticas. As aulas de Netflix e Spotify incluem referências técnicas das empresas.
 

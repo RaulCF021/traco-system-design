@@ -1,3 +1,6 @@
+import {mountDesignSchool} from './design-school.js';
+import {mountDesignStudio} from './design-studio.js';
+import {pieceWorkspace,projectLibrary} from './personal-projects.js';
 import {mountFirstQuery} from './first-query.js';
 import {mountFirstBuild} from './first-build.js';
 import {componentSchool,architectSchool,practice} from './teaching.js';
@@ -19,7 +22,9 @@ saved.beginner??={};saved.beginner.parts??={};
 let selected=lessons.find(x=>x.id===saved.selected)||lessons[0];
 let view='lab', editor, graph, load, result, previous;
 const sandbox={id:'sandbox',title:'Modo livre',subtitle:'Experimente topologias e compare o efeito de cada mudança.',graph:{nodes:[{id:'client',type:'client',x:40,y:90,replicas:1}],edges:[]},load:500};
-const current=()=>view==='sandbox'?sandbox:selected;
+let activeFree=sandbox;
+const freeView=()=>['sandbox','ensaio','meu'].includes(view);
+const current=()=>freeView()?activeFree:selected;
 function save(){
   try{localStorage.setItem(storageKey,JSON.stringify(saved))}catch{document.querySelector('#status').textContent='O navegador não conseguiu salvar o progresso.'}
 }
@@ -42,24 +47,29 @@ function render(v){
     selected=lessons.find(l=>l.id===id)||lessons[0];
     saved.selected=selected.id;save();
   }
-  view=route==='missao'?'lab':['aprender','pecas','arquiteto','montagem','pratica','school','tutorial','experiments','aula','lab','track','sandbox'].includes(route)?route:'aprender';
+  view=route==='missao'?'lab':['aprender','projeto','projetos','meu','livre','ensaio','musica','pecas','arquiteto','montagem','pratica','school','tutorial','experiments','aula','lab','track','sandbox'].includes(route)?route:'aprender';
   window.scrollTo(0,0);
   editor?.destroy?.();editor=null;result=null;previous=null;
-  const navGroup={aula:'school',lab:'pratica',tutorial:'pratica',experiments:'pratica',track:'pratica',sandbox:'pratica',montagem:'aprender'};
+  if(view==='livre')view='projetos';
+  const navGroup={projetos:'livre',meu:'livre',projeto:'aprender',ensaio:'pecas',musica:'school',aula:'school',lab:'pratica',tutorial:'pratica',experiments:'pratica',track:'pratica',sandbox:'pratica',montagem:'aprender'};
   document.querySelectorAll('#site-nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===(navGroup[view]||view)));
   updateXP();
   const beginner=saved.beginner;
-  if(['aprender','pecas','montagem','arquiteto'].includes(view)){
-    const milestones=[beginner.query,beginner.parts.client&&beginner.parts.api&&beginner.parts.postgres,beginner.build,beginner.decision];
-    const stops=[['aprender','1. Acompanhar um pedido'],['pecas/client','2. Conhecer as peças'],['montagem','3. Montar com ajuda'],['arquiteto','4. Tomar uma decisão']];
-    app.innerHTML='<div class="learn-path" aria-label="Percurso para iniciantes">'+stops.map(([r,t],i)=>'<a href="#'+r+'" aria-current="'+(r.split('/')[0]===view?'step':'false')+'">'+t+(milestones[i]?' ✓':'')+'</a>').join('')+'</div><div id="teaching-area"></div>';
-    const root=app.querySelector('#teaching-area');
-    if(view==='aprender')editor=mountFirstQuery(root,()=>{beginner.query=true;save();navigate('pecas/client')});
-    if(view==='pecas')componentSchool(root,id,beginner,save);
-    if(view==='montagem')editor=mountFirstBuild(root,()=>{beginner.build=true;save();navigate('arquiteto')});
-    if(view==='arquiteto')architectSchool(root,beginner,save);
-    return;
-  }
+  if(view==='aprender'){editor=mountDesignSchool(app,saved,save);return}
+  if(view==='projeto'){editor=mountDesignStudio(app,id,saved,save);return}
+  if(view==='projetos'){projectLibrary(app,saved,save,navigate);return}
+  if(view==='pecas'){componentSchool(app,id,beginner,save);return}
+  if(view==='musica'){editor=mountFirstQuery(app,()=>navigate('montagem'));return}
+  if(view==='montagem'){editor=mountFirstBuild(app,()=>navigate('arquiteto'));return}
+  if(view==='arquiteto'){architectSchool(app,beginner,save);return}
+  if(view==='meu'){
+    const project=Object.hasOwn(saved.projects||{},id)&&saved.projects[id];
+    if(!project){navigate('livre');return}
+    activeFree={id:'p-'+id,title:project.title,subtitle:project.goal||'Desenhe o caminho de um pedido e teste sua hipótese.',graph:{nodes:[],edges:[]},load:300};
+  }else if(view==='ensaio'){
+    if(!Object.hasOwn(catalog,id)){navigate('pecas/client');return}
+    activeFree=pieceWorkspace(id);
+  }else activeFree=sandbox;
   if(view==='pratica'){practice(app);return}
   if(view==='school'){academy(app,saved);return}
   if(view==='aula'){reader(app,selected,saved,save);return}
@@ -68,20 +78,28 @@ function render(v){
   if(view==='track'){
     showMissionDesk(selected);return;
   }
-  const l=current(), free=view==='sandbox',draft=saved.drafts[l.id];
+  const l=current(), free=freeView(),draft=saved.drafts[l.id];
   graph=structuredClone(draft?.graph??l.graph);load=draft?.load??l.load;
   app.innerHTML=hero(free?'Laboratório aberto':'Laboratório / Missão '+String(lessons.indexOf(l)+1).padStart(2,'0')+' de '+String(lessons.length).padStart(2,'0'),l.title,l.subtitle)+
   '<div class="workspace"><div><div id="editor"></div><div id="result" aria-live="polite"></div></div><aside class="panel side"><div class="micro">'+(free?'Experimento livre':esc(l.level)+' · '+esc(l.minutes)+' min')+'</div><h2>'+(free?'Bancada de testes':'Briefing da missão')+'</h2><p>'+esc(free?'Monte sua arquitetura no grid e ajuste a carga para investigar capacidade, latência e custo.':l.brief)+'</p>'+
-  (free?'':'<a class="textlink lesson-link" href="#aula/'+l.id+'">Estudar esta aula</a><a class="textlink lesson-link" href="#tutorial">Tutorial do editor</a>')+
+  (free?'<details open><summary>Orientação para o desenho</summary><p id="graph-help"></p><a class="lesson-help" href="#pecas/client">Consultar as peças</a></details>':'<a class="textlink lesson-link" href="#aula/'+l.id+'">Estudar esta aula</a><a class="textlink lesson-link" href="#tutorial">Tutorial do editor</a>')+
   (free?'':'<section><h3>Critérios de sucesso</h3><div id="goals"></div></section>')+
   '<section><div class="row"><label for="loadnum">Carga de entrada</label><span class="loadnumber"><input type="number" id="loadnum" min="1" max="100000" step="1"> req/s</span></div><input aria-label="Ajustar carga de entrada" class="range" id="load" type="range" min="1" max="'+Math.max(5000,l.load*2,load)+'" value="'+load+'"><button class="run" id="run">▷ &nbsp; Simular tráfego</button></section>'+
   (free?'':'<details><summary>Pistas da missão</summary><ol>'+l.hints.map(h=>'<li>'+esc(h)+'</li>').join('')+'</ol></details><details><summary>Conceito e referências</summary><p>'+esc(l.concept)+'</p>'+l.sources.map(s=>'<p><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.title)+'</a></p>').join('')+'</details>')+'<details><summary>Controles do laboratório</summary><p>Clique ou arraste um componente da biblioteca. Selecione um bloco para configurar suas instâncias ou simular uma falha. Para ligar dois blocos, clique no conector de saída e depois no destino.</p><button class="secondary" id="reset">Restaurar topologia inicial</button></details></aside></div>';
   const range=app.querySelector('#load');
-  const numeric=app.querySelector('#loadnum'); function setLoad(){numeric.value=load;range.max=Math.max(Number(range.max),load);range.value=load} numeric.onchange=()=>{load=Math.max(1,Math.min(100000,Math.round(Number(numeric.value)||l.load)));setLoad();invalidate();persist()}; const reset=app.querySelector('#reset');if(reset)reset.onclick=()=>{if(confirm('Restaurar os blocos e as conexões iniciais deste cenário?')){delete saved.drafts[l.id];save();render(view)}};
+  const numeric=app.querySelector('#loadnum'); function setLoad(){numeric.value=load;range.max=Math.max(Number(range.max),load);range.value=load} numeric.onchange=()=>{load=Math.max(1,Math.min(100000,Math.round(Number(numeric.value)||l.load)));setLoad();invalidate();persist()}; const reset=app.querySelector('#reset');if(reset)reset.onclick=()=>{if(confirm('Restaurar os blocos e as conexões iniciais deste cenário?')){delete saved.drafts[l.id];save();render(location.hash.slice(1))}};
   setLoad();
   range.oninput=()=>{load=Number(range.value);setLoad();invalidate();persist()};
-  editor=mountEditor(app.querySelector('#editor'),graph,g=>{graph=g;invalidate();persist()});
-  app.querySelector('#run').onclick=run;goals();
+  editor=mountEditor(app.querySelector('#editor'),graph,g=>{graph=g;updateGraphHelp();invalidate();persist()});
+  updateGraphHelp();app.querySelector('#run').onclick=run;goals();
+}
+function updateGraphHelp(){
+ const hint=app.querySelector('#graph-help');if(!hint)return;
+ const client=graph.nodes.find(n=>n.type==='client');
+ if(!client){hint.textContent='Quem inicia o pedido? Adicione Cliente na biblioteca. Ele pode representar um navegador, celular ou outro serviço.';return}
+ if(graph.nodes.length===1){hint.textContent='Quem recebe esse pedido? Para começar com um serviço, adicione API. Depois clique no círculo de saída do Cliente e selecione a API.';return}
+ if(!graph.edges.some(e=>e.from===client.id)){hint.textContent='Seu cliente ainda não envia pedidos. Clique no conector de saída do Cliente e no componente que deve receber o pedido.';return}
+ hint.textContent='Siga o pedido a partir do cliente. Se a ação precisa guardar ou consultar dados, escolha onde eles ficam. Simule, anote o limite e mude uma coisa por vez para descobrir o efeito.';
 }
 function showMissionDesk(lesson){
   const {nodes,edges}=lesson.graph;
