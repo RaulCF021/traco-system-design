@@ -99,7 +99,7 @@ export function mountEditor(container, initialGraph, onChange=()=>{}){
     if(!n){info.hidden=true;return;}info.hidden=false;
     const data=catalog[n.type],head=element('div','te-insp-head'),body=element('div','te-insp-body'),copy=element('div','te-insp-copy');
     head.append(emblem(n.type),element('strong','',data.name),button('Fechar detalhes',tools.close,()=>{selected=source=null;notice.textContent='';draw();},'te-close'));
-    copy.append(element('p','',data.description));body.append(copy);
+    copy.append(element('p','',data.description));const guide=element('a','lesson-help','Entender esta peça passo a passo');guide.href='#pecas/'+n.type;copy.append(guide);body.append(copy);
     if(Number.isFinite(data.capacity)){const model=element('small','te-spec',data.capacity.toLocaleString('pt-BR')+' req/s por instância · '+data.baseMs+' ms de serviço · '+data.cost+' créditos/h');copy.append(model);} const settings=element('div','te-settings'),replicas=element('div','te-replicas'),less=button('Reduzir instâncias',tools.minus,()=>{checkpoint();n.replicas--;change();}),more=button('Aumentar instâncias',tools.plus,()=>{checkpoint();n.replicas++;change();});
     less.disabled=n.replicas<=1;more.disabled=n.replicas>=32;
     replicas.append(element('span','','Instâncias'),less,element('b','',String(n.replicas)),more);

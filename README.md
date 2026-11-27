@@ -8,7 +8,7 @@ Com Node.js 22 ou superior instalado, rode `npm start` na raiz do projeto e abra
 
 ## Estudar
 
-Abra a Escola para seguir a trilha ou o Tutorial para aprender os controles do editor. Na bancada, conecte componentes, ajuste a carga e compare o resultado com a sua previsão. O navegador guarda o progresso e os desenhos localmente.
+A entrada **Começar do zero** acompanha um pedido de faixas de um álbum. Em seguida, o guia apresenta as peças, a primeira montagem orienta cada ligação e a oficina **Como decidir** ensina a perguntar, medir e comparar alternativas. A carga e o requisito de atualização podem ser explorados na oficina. O menu **Praticar** reúne os desafios, os experimentos e o editor livre. O navegador guarda as etapas concluídas e os desenhos localmente.
 
 O simulador estima demanda, vazão, latência média, crescimento de fila e custo relativo. Capacidades e taxas de acerto são hipóteses didáticas. As aulas de Netflix e Spotify incluem referências técnicas das empresas.
 

@@ -1,3 +1,6 @@
+import {mountFirstQuery} from './first-query.js';
+import {mountFirstBuild} from './first-build.js';
+import {componentSchool,architectSchool,practice} from './teaching.js';
 import {academy,reader} from './academy.js';
 import {mountTutorial} from './tutorial.js';
 import {mountExperiments} from './experiments.js';
@@ -12,6 +15,7 @@ const storageKey='traco.lab.v1';
 let saved={};
 try {saved=JSON.parse(localStorage.getItem(storageKey))||{}}catch{}
 saved.drafts??={}; saved.completed??={};
+saved.beginner??={};saved.beginner.parts??={};
 let selected=lessons.find(x=>x.id===saved.selected)||lessons[0];
 let view='lab', editor, graph, load, result, previous;
 const sandbox={id:'sandbox',title:'Modo livre',subtitle:'Experimente topologias e compare o efeito de cada mudança.',graph:{nodes:[{id:'client',type:'client',x:40,y:90,replicas:1}],edges:[]},load:500};
@@ -38,11 +42,25 @@ function render(v){
     selected=lessons.find(l=>l.id===id)||lessons[0];
     saved.selected=selected.id;save();
   }
-  view=route==='missao'?'lab':['school','tutorial','experiments','aula','lab','track','sandbox'].includes(route)?route:'school';
+  view=route==='missao'?'lab':['aprender','pecas','arquiteto','montagem','pratica','school','tutorial','experiments','aula','lab','track','sandbox'].includes(route)?route:'aprender';
   window.scrollTo(0,0);
   editor?.destroy?.();editor=null;result=null;previous=null;
-  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===(view==='aula'?'school':view==='lab'?'track':view)));
+  const navGroup={aula:'school',lab:'pratica',tutorial:'pratica',experiments:'pratica',track:'pratica',sandbox:'pratica',montagem:'aprender'};
+  document.querySelectorAll('#site-nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===(navGroup[view]||view)));
   updateXP();
+  const beginner=saved.beginner;
+  if(['aprender','pecas','montagem','arquiteto'].includes(view)){
+    const milestones=[beginner.query,beginner.parts.client&&beginner.parts.api&&beginner.parts.postgres,beginner.build,beginner.decision];
+    const stops=[['aprender','1. Acompanhar um pedido'],['pecas/client','2. Conhecer as peças'],['montagem','3. Montar com ajuda'],['arquiteto','4. Tomar uma decisão']];
+    app.innerHTML='<div class="learn-path" aria-label="Percurso para iniciantes">'+stops.map(([r,t],i)=>'<a href="#'+r+'" aria-current="'+(r.split('/')[0]===view?'step':'false')+'">'+t+(milestones[i]?' ✓':'')+'</a>').join('')+'</div><div id="teaching-area"></div>';
+    const root=app.querySelector('#teaching-area');
+    if(view==='aprender')editor=mountFirstQuery(root,()=>{beginner.query=true;save();navigate('pecas/client')});
+    if(view==='pecas')componentSchool(root,id,beginner,save);
+    if(view==='montagem')editor=mountFirstBuild(root,()=>{beginner.build=true;save();navigate('arquiteto')});
+    if(view==='arquiteto')architectSchool(root,beginner,save);
+    return;
+  }
+  if(view==='pratica'){practice(app);return}
   if(view==='school'){academy(app,saved);return}
   if(view==='aula'){reader(app,selected,saved,save);return}
   if(view==='tutorial'){app.innerHTML='<div id="tutorial"></div>';editor=mountTutorial(app.firstElementChild,()=>navigate('missao/'+lessons[0].id));return}
