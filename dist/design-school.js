@@ -1,3 +1,4 @@
+import {componentShelf} from './component-atlas.js';
 import {scenarios} from './scenarios.js';
 
 const steps=['Entender o pedido','Definir requisitos','Delimitar o projeto','Medir e evoluir'];
@@ -91,7 +92,7 @@ export function mountDesignSchool(container,state={},save=()=>{},initialId) {
     for(const [a,b] of [['Quem pede',f.from],['Qual ação',f.request],['Do que depende',f.depends]]) {
       const item=el('li');item.append(el('small','',a),el('strong','',b));flow.append(item);
     }
-    stage.append(flow);root.append(stage);
+    stage.append(flow,componentShelf(id));root.append(stage);
     const dock=el('div','ds-dock');const nav=el('nav','ds-steps');
     nav.setAttribute('aria-label','Etapas do desenho');
     steps.forEach((label,i)=>{const b=control((i+1)+'. '+label,()=>move(i));if(i===page)b.setAttribute('aria-current','step');nav.append(b)});
@@ -141,7 +142,7 @@ export function mountDesignSchool(container,state={},save=()=>{},initialId) {
     if(page<3)actions.append(control('Próxima etapa →',()=>move(page+1),'ds-next'));
     if(page===3)actions.append(goto('Montar com orientação','guiado/'+id,'ds-launch'));
     dock.append(actions);root.append(dock);
-    const footer=el('div','ds-foot');footer.append(goto('Conhecer as peças','pecas/client'),goto('Começar em um quadro vazio','livre'));root.append(footer);
+    const footer=el('div','ds-foot');footer.append(goto('Abrir catálogo de componentes','pecas'),goto('Começar em um quadro vazio','livre'));root.append(footer);
   }
   draw();return {destroy(){root.remove()}};
 }

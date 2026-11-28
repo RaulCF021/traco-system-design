@@ -1,3 +1,4 @@
+import {componentShelf} from './component-atlas.js';
 import {scenarios} from './scenarios.js';
 
 const examples={
@@ -15,6 +16,7 @@ export function learningPath(root,state,save){
   const ex=examples[id],scenario=scenarios[id],record=memory.cases[id]??={step:0};
   const step=record.step,urls=['','requisitos/'+id,'guiado/'+id,'projeto/'+id,'revisao/'+id];
   root.innerHTML='<article class="lp"><header class="lp-head"><div><p>Escola de System Design</p><h1>Do pedido à arquitetura</h1><p>Projetar um sistema começa entendendo o que alguém precisa fazer. Vamos acompanhar uma ação antes de escolher uma tecnologia.</p></div><label>Exemplo desta trilha<select></select></label></header><div class="lp-layout"><aside><h2>Percurso de formação</h2></aside><section class="lp-lesson"><small>Primeiros conceitos · '+scenario.title+'</small><h2>O que acontece depois do clique?</h2><p>Imagine '+ex.actor+' tentando '+ex.action+'. Um <strong>pedido</strong> é a mensagem que inicia esse trabalho. A <strong>resposta</strong> é o resultado que permite seguir em frente.</p><div class="lp-flow"></div><div class="lp-example" aria-live="polite"></div><div class="lp-controls"></div></section></div></article>';
+  root.querySelector('.lp-flow').after(componentShelf(id));
   const select=root.querySelector('select');for(const [key,value] of Object.entries(scenarios)){const o=new Option(value.title,key);o.selected=key===id;select.add(o)}
   select.onchange=()=>{id=memory.id=select.value;state.designSchool??={};state.designSchool.selected=id;save();render()};
   const side=root.querySelector('aside');levels.forEach((level,i)=>{const a=document.createElement(i?'a':'div');if(i)a.href='#'+urls[i];a.className='lp-level';a.innerHTML='<small>0'+(i+1)+'</small><span><b>'+level+'</b><em>'+desc[i]+'</em></span>';side.append(a)});

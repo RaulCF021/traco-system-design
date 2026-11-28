@@ -120,3 +120,59 @@ export const foundations = {
     correct:2,feedback:['A própria API pode receber os números e calcular a soma.','Use um armazenamento para guardar o arquivo.','Isso. A entrada comum concentra o encaminhamento e pode aplicar regras compartilhadas.']
   }
 };
+Object.assign(foundations, {
+  broker:{
+    name:'Broker de eventos · pub/sub',
+    what:'Publicar e assinar é um jeito de distribuir avisos. Um serviço publica um evento, como “encomenda entregue”. Os serviços inscritos naquele assunto podem receber cada um a sua cópia.',
+    example:'Ao receber o evento de entrega, o sistema de mensagens avisa a pessoa e o de indicadores atualiza os números do dia. Ambos precisam saber da mesma entrega.',
+    placement:'Ligue quem publica ao broker. Crie uma saída para cada assinante que precisa receber o evento. Para dois grupos com objetivos próprios, desenhe dois destinos.',
+    mistake:'Dividir os eventos pela quantidade de assinantes subestima o trabalho. Se ambos assinam o mesmo assunto, cada um recebe o fluxo completo.',
+    question:'Notificações e indicadores assinam o mesmo assunto. O serviço publica dez eventos. Quantas entregas aos assinantes são necessárias?',
+    options:['Cinco','Dez','Vinte'],correct:2,feedback:['Dividir por dois distribuiria o trabalho entre executores equivalentes. Aqui os grupos precisam de cópias.','Dez é a quantidade publicada originalmente.','Isso. Cada um dos dois grupos precisa receber os dez eventos.']
+  },
+  proxy:{
+    name:'Proxy reverso',
+    what:'É um intermediário na frente dos servidores de uma aplicação. O navegador chama o endereço público do proxy. O proxy encaminha o pedido ao servidor interno e devolve a resposta pelo mesmo endereço.',
+    example:'Uma escola publica um portal em um endereço estável. A equipe muda o servidor interno durante uma atualização e ajusta o destino no proxy. Os alunos continuam usando o endereço conhecido.',
+    placement:'Ligue Cliente → Proxy reverso → API. Trace apenas a ida. A resposta da API já retorna pelo intermediário.',
+    mistake:'Encaminhar um pedido e guardar a resposta para reutilizá-la são funções diferentes. A presença de um proxy, sozinha, não implica que o banco receberá menos consultas.',
+    question:'Quem o proxy reverso representa perante o navegador?',
+    options:['O serviço publicado atrás dele','A pessoa que está usando o navegador','O arquivo que a pessoa vai baixar'],correct:0,feedback:['Correto. O proxy recebe chamadas em nome do serviço publicado.','Um proxy de saída pode agir em nome do cliente. A peça estudada aqui fica na entrada do serviço.','O arquivo é conteúdo. O proxy recebe e encaminha o pedido desse conteúdo.']
+  },
+  limiter:{
+    name:'Limitador de taxa',
+    what:'É uma regra de entrada que aceita uma quantidade limitada de pedidos em determinado período. Uma aplicação pode usá-la para manter trabalho suficiente dentro da capacidade de uma dependência.',
+    example:'Um portal de inscrições protege o serviço de validação durante a abertura das vagas. Acima do limite, alguns pedidos recebem uma resposta orientando a tentar mais tarde.',
+    placement:'Ligue o cliente ao limitador e o limitador ao serviço protegido. Compare o ritmo de chegada com a demanda que efetivamente chega ao serviço seguinte.',
+    mistake:'Tratar todo pedido rejeitado como se estivesse guardado para depois confunde limitação com fila. Um pedido recusado só voltará se alguém o enviar de novo.',
+    question:'Um pedido excedeu um limite que rejeita o excedente. Onde ele aguarda processamento?',
+    options:['Na memória do banco','Em lugar nenhum por padrão','Na próxima réplica da API'],correct:1,feedback:['A rejeição ocorre antes de chegar ao banco.','Isso. Adiar trabalho automaticamente exigiria uma fila ou outra política explícita.','Um limite global pode rejeitar mesmo com outras peças disponíveis.']
+  },
+  auth:{
+    name:'Serviço de identidade',
+    what:'Identidade responde à pergunta “quem está fazendo o pedido?”. Um serviço pode conferir uma credencial e fornecer informações sobre a conta. Outra decisão determina se essa conta pode executar uma ação específica.',
+    example:'Uma professora entra no portal com sua conta. A escola ainda precisa verificar quais turmas ela pode consultar. Saber quem entrou é apenas a primeira parte.',
+    placement:'Represente a verificação de identidade na rota do pedido protegido. Antes de desenhar, decida se a aplicação consultará o serviço a cada chamada ou verificará localmente uma credencial já emitida.',
+    mistake:'Confundir uma conta válida com acesso universal permite mostrar documentos de uma pessoa a outra. O acesso a cada recurso precisa de uma regra.',
+    question:'Uma estudante entrou com sua própria conta. O que falta para abrir um histórico escolar específico?',
+    options:['Duplicar as máquinas do portal','Tornar o histórico público','Verificar se essa conta pode acessar aquele histórico'],correct:2,feedback:['Capacidade de atender pedidos não determina permissões.','Publicar o documento eliminaria a privacidade esperada.','Isso. A aplicação deve aplicar a regra de acesso ao documento pedido.']
+  },
+  timeseries:{
+    name:'Banco de séries temporais',
+    what:'É um armazenamento preparado para medições associadas a instantes. Cada amostra pode informar quando foi coletada, qual sensor a produziu e quanto ele mediu.',
+    example:'Uma estação mede a temperatura a cada minuto. Para saber quando a câmara fria começou a aquecer, a equipe pede as amostras de um sensor entre 14h e 15h.',
+    placement:'Para estudar a entrada de amostras, desenhe Cliente → API → Banco temporal. Cada pedido representa uma amostra recebida. A pergunta sobre a última hora orienta o que guardar. O simulador mede a ingestão.',
+    mistake:'Tentar interpretar um dado atrasado usando apenas a hora em que ele chegou pode situar um pico no instante errado. Registre a hora da medição.',
+    question:'Qual pergunta combina diretamente com uma série temporal?',
+    options:['Como a temperatura do sensor variou na última hora?','Qual é o texto de uma cláusula do contrato?','Quem pode alterar uma senha?'],correct:0,feedback:['Correto. A pergunta procura valores de uma medição ao longo do tempo.','O texto pode ser guardado em documentos ou registros.','Essa é uma questão de identidade e permissão.']
+  },
+  warehouse:{
+    name:'Armazém de dados · warehouse',
+    what:'É uma base voltada a análises que cruzam muito histórico. Pode reunir dados de sistemas diferentes e preparar medidas para perguntas de negócio.',
+    example:'Uma cooperativa compara as entregas por cidade, por mês e por tipo de veículo durante dois anos. Para isso, reúne dados de rotas e pedidos numa base analítica.',
+    placement:'Para simular uma consulta analítica, ligue Cliente → API → Warehouse. Em um desenho de produção, explique também como os dados de origem chegam à base e com que atraso.',
+    mistake:'Usar um relatório atualizado de madrugada para decidir se ainda existe um produto na prateleira pode mostrar um saldo antigo. Verifique de qual instante são os dados.',
+    question:'Qual tarefa é mais natural para um armazém de dados?',
+    options:['Confirmar a última unidade em estoque durante o pagamento','Comparar o faturamento trimestral de cinquenta lojas','Transmitir uma imagem pública ao navegador'],correct:1,feedback:['Essa decisão exige estado operacional atualizado e controle da gravação.','Isso. A análise agrega muitos registros históricos e compara unidades ao longo do tempo.','Um armazenamento de arquivos ou uma rede de distribuição pode entregar a imagem.']
+  }
+});

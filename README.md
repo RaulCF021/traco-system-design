@@ -8,7 +8,7 @@ Com Node.js 22 ou superior instalado, rode `npm start` na raiz do projeto e abra
 
 ## Estudar
 
-O percurso começa com um pedido explicado em três passos, seguido de análise de requisitos, montagem orientada, laboratório aberto e revisão de arquitetura. Cada um dos quatro projetos oferece esse percurso. O levantamento escrito pelo aluno fica disponível no laboratório. O guia das 12 peças tem critérios de escolha, alternativas e experimentos. A revisão avançada inclui mudança de requisito, cálculo de carga e registro da decisão.
+O percurso começa com um pedido explicado em três passos, seguido de análise de requisitos, montagem orientada, laboratório aberto e revisão de arquitetura. Cada um dos quatro projetos oferece esse percurso. O levantamento escrito pelo aluno fica disponível no laboratório. O catálogo pesquisável de componentes tem critérios de escolha, alternativas e experimentos. A revisão avançada inclui mudança de requisito, cálculo de carga e registro da decisão.
 
 Escolha entre loja online, agenda, geração de documentos e entrega de mapas. Cada projeto combina perguntas de arquitetura, um desenho editável e experimentos com carga, custo e dependências. No guia de componentes, cada peça tem uma explicação e um ensaio editável. **Meus projetos** abre uma tela em branco para modelar outro problema e guardar seu próprio desenho. Os estudos de caso e os tutoriais ficam disponíveis separadamente.
 

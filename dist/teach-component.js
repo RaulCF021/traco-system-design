@@ -1,7 +1,7 @@
 import {foundations} from './foundations.js';
 import {componentCourse} from './component-course.js';
 
-const order=['client','api','postgres','redis','lb','cdn','storage','queue','worker','gateway','search','nosql'];
+const order=Object.keys(foundations);
 export function teachComponent(root,id,state,save){
  const key=Object.hasOwn(foundations,id)?id:'client', base=foundations[key],extra=componentCourse[key];
  state.componentStudy??={};const record=state.componentStudy[key]??={page:0};
@@ -9,7 +9,7 @@ export function teachComponent(root,id,state,save){
  function paragraph(label,text){return '<h3>'+label+'</h3><p>'+text+'</p>'}
  function display(){
   const page=record.page;
-  root.innerHTML='<article class="teach"><div class="teach-head"><p>Guia dos 12 componentes</p><h1>'+base.name+'</h1><label>Componente <select>'+order.map(k=>'<option value="'+k+'" '+(k===key?'selected':'')+'>'+foundations[k].name+'</option>').join('')+'</select></label></div><div class="teach-body"><div class="cc-tabs"></div><section class="cc-body"></section><div class="teach-actions"></div></div></article>';
+  root.innerHTML='<article class="teach"><div class="teach-head"><a class="atlas-back" href="#pecas">‹ Todos os componentes</a><h1>'+base.name+'</h1><label>Componente <select>'+order.map(k=>'<option value="'+k+'" '+(k===key?'selected':'')+'>'+foundations[k].name+'</option>').join('')+'</select></label></div><div class="teach-body"><div class="cc-tabs"></div><section class="cc-body"></section><div class="teach-actions"></div></div></article>';
   root.querySelector('select').onchange=e=>location.hash='pecas/'+e.target.value;
   const tabs=root.querySelector('.cc-tabs'),body=root.querySelector('.cc-body'),actions=root.querySelector('.teach-actions');
   function go(i){record.page=i;save();display();const title=root.querySelector('.cc-body h2');title.tabIndex=-1;title.focus({preventScroll:true})}

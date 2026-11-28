@@ -1,3 +1,4 @@
+import {componentAtlas} from './component-atlas.js';
 import {learningPath} from './learning-path.js';
 import {mountGuidedBuild} from './guided-build.js';
 import {mountArchitectureReview} from './architecture-review.js';
@@ -66,7 +67,7 @@ function render(v){
   if(view==='revisao'){editor=mountArchitectureReview(app,id,saved,save);return}
   if(view==='projeto'){editor=mountDesignStudio(app,id,saved,save);return}
   if(view==='projetos'){projectLibrary(app,saved,save,navigate);return}
-  if(view==='pecas'){teachComponent(app,id,beginner,save);return}
+  if(view==='pecas'){if(Object.hasOwn(catalog,id))teachComponent(app,id,beginner,save);else componentAtlas(app,beginner);return}
   if(view==='musica'){editor=mountFirstQuery(app,()=>navigate('montagem'));return}
   if(view==='montagem'){editor=mountFirstBuild(app,()=>navigate('arquiteto'));return}
   if(view==='arquiteto'){architectSchool(app,beginner,save);return}

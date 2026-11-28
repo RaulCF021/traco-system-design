@@ -9,6 +9,38 @@ function chain(...types) {
   };
 }
 
+test('limite compartilhado recusa excesso sem pressionar a API', () => {
+  const graph=chain('client','limiter','api');
+  graph.nodes[1].replicas=3;
+  const result=simulate(graph,900);
+  assert.equal(result.nodes.api.demand,600);
+  assert.equal(result.nodes.limiter.rejected,300);
+  assert.equal(result.throughput,600);
+  assert.match(result.issues.join(' '),/política fixa/);
+  assert.equal(result.backlog,0);
+});
+
+test('um assinante lento não bloqueia o ACK nem as outras assinaturas', () => {
+  const graph=chain('client','broker','worker');
+  graph.nodes.push({id:'extra',type:'worker',replicas:2});
+  graph.edges.push({from:'broker',to:'extra'});
+  const result=simulate(graph,500);
+  assert.equal(result.throughput,500);
+  assert.equal(result.nodes.worker.completed,350);
+  assert.equal(result.nodes.extra.completed,500);
+  assert.equal(result.nodes.broker.pendingDeliveries,150);
+  assert.equal(result.backlog,150);
+});
+
+test('proxy encaminha uma vez e retira um upstream indisponível da distribuição', () => {
+  const graph=chain('client','proxy','api');
+  graph.nodes.push({id:'extra',type:'api',offline:true});
+  graph.edges.push({from:'proxy',to:'extra'});
+  assert.equal(simulate(graph,700).nodes.api.demand,700);
+  graph.nodes.at(-1).offline=false;
+  assert.equal(simulate(graph,700).nodes.api.demand,350);
+});
+
 test('relational storage limits completed reads and cache hits bypass it', () => {
   assert.equal(simulate(chain('client', 'api', 'postgres'), 700).throughput, 450);
   const warm = simulate(chain('client', 'api', 'redis', 'postgres'), 700);
