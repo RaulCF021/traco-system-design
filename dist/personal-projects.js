@@ -1,17 +1,19 @@
 import {catalog} from './model.js';
 
 const recipes={
- client:['client','api'],api:['client','api','postgres'],postgres:['client','api','postgres'],
- redis:['client','api','redis','postgres'],lb:['client','lb','api'],cdn:['client','cdn','storage'],
- storage:['client','api','storage'],queue:['client','api','queue','worker'],worker:['client','queue','worker'],
+ client:['client','api'],api:['client','api'],postgres:['client','api','postgres'],
+ redis:['client','api','postgres'],lb:['client','lb','api'],cdn:['client','storage'],
+ storage:['client','storage'],queue:['client','api','queue','worker','storage'],worker:['client','api','queue','worker','storage'],
  gateway:['client','gateway','api'],search:['client','api','search'],nosql:['client','api','nosql']
 };
 export function pieceWorkspace(type){
  const chain=recipes[type]||recipes.client;
- const nodes=chain.map((type,i)=>({id:'n'+i,type,x:25+i*180,y:80,replicas:1}));
+ const load={client:300,api:300,postgres:900,lb:1400,redis:700,cdn:6000,storage:2000,queue:700,worker:700,search:750,nosql:1400,gateway:2400}[type];
+ const replicaType=type==='worker'?'worker':['postgres','nosql','gateway'].includes(type)?'api':null;
+ const nodes=chain.map((kind,i)=>({id:'n'+i,type:kind,x:25+i*180,y:80,replicas:kind===replicaType?(type==='gateway'?3:2):1}));
  const edges=nodes.slice(1).map((n,i)=>({from:nodes[i].id,to:n.id}));
  if(type==='lb'){nodes.push({id:'peer',type:'api',x:385,y:200,replicas:1});edges.push({from:'n1',to:'peer'})}
- return {id:'ensaio-'+type,title:'Experimentar '+catalog[type].name,subtitle:'Simule o caminho inicial. Depois mude uma peça, conexão ou réplica e compare os resultados.',graph:{nodes,edges},load:700};
+ return {id:'ensaio-'+type,title:'Experimentar '+catalog[type].name,subtitle:'Simule o caminho inicial. Depois mude uma peça, conexão ou réplica e compare os resultados.',graph:{nodes,edges},load};
 }
 export function projectLibrary(root,saved,save,navigate){
  saved.projects??={};

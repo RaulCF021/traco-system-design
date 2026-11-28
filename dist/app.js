@@ -1,9 +1,14 @@
+import {learningPath} from './learning-path.js';
+import {mountGuidedBuild} from './guided-build.js';
+import {mountArchitectureReview} from './architecture-review.js';
+import {teachComponent} from './teach-component.js';
+import {componentCourse} from './component-course.js';
 import {mountDesignSchool} from './design-school.js';
 import {mountDesignStudio} from './design-studio.js';
 import {pieceWorkspace,projectLibrary} from './personal-projects.js';
 import {mountFirstQuery} from './first-query.js';
 import {mountFirstBuild} from './first-build.js';
-import {componentSchool,architectSchool,practice} from './teaching.js';
+import {architectSchool,practice} from './teaching.js';
 import {academy,reader} from './academy.js';
 import {mountTutorial} from './tutorial.js';
 import {mountExperiments} from './experiments.js';
@@ -47,18 +52,21 @@ function render(v){
     selected=lessons.find(l=>l.id===id)||lessons[0];
     saved.selected=selected.id;save();
   }
-  view=route==='missao'?'lab':['aprender','projeto','projetos','meu','livre','ensaio','musica','pecas','arquiteto','montagem','pratica','school','tutorial','experiments','aula','lab','track','sandbox'].includes(route)?route:'aprender';
+  view=route==='missao'?'lab':['aprender','guiado','requisitos','revisao','projeto','projetos','meu','livre','ensaio','musica','pecas','arquiteto','montagem','pratica','school','tutorial','experiments','aula','lab','track','sandbox'].includes(route)?route:'aprender';
   window.scrollTo(0,0);
   editor?.destroy?.();editor=null;result=null;previous=null;
   if(view==='livre')view='projetos';
-  const navGroup={projetos:'livre',meu:'livre',projeto:'aprender',ensaio:'pecas',musica:'school',aula:'school',lab:'pratica',tutorial:'pratica',experiments:'pratica',track:'pratica',sandbox:'pratica',montagem:'aprender'};
+  const navGroup={guiado:'aprender',requisitos:'aprender',revisao:'aprender',projetos:'livre',meu:'livre',projeto:'aprender',ensaio:'pecas',musica:'school',aula:'school',lab:'pratica',tutorial:'pratica',experiments:'pratica',track:'pratica',sandbox:'pratica',montagem:'aprender'};
   document.querySelectorAll('#site-nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===(navGroup[view]||view)));
   updateXP();
   const beginner=saved.beginner;
-  if(view==='aprender'){editor=mountDesignSchool(app,saved,save);return}
+  if(view==='aprender'){editor=learningPath(app,saved,save);return}
+  if(view==='requisitos'){editor=mountDesignSchool(app,saved,save,id);return}
+  if(view==='guiado'){editor=mountGuidedBuild(app,id,saved,save);return}
+  if(view==='revisao'){editor=mountArchitectureReview(app,id,saved,save);return}
   if(view==='projeto'){editor=mountDesignStudio(app,id,saved,save);return}
   if(view==='projetos'){projectLibrary(app,saved,save,navigate);return}
-  if(view==='pecas'){componentSchool(app,id,beginner,save);return}
+  if(view==='pecas'){teachComponent(app,id,beginner,save);return}
   if(view==='musica'){editor=mountFirstQuery(app,()=>navigate('montagem'));return}
   if(view==='montagem'){editor=mountFirstBuild(app,()=>navigate('arquiteto'));return}
   if(view==='arquiteto'){architectSchool(app,beginner,save);return}
@@ -86,6 +94,12 @@ function render(v){
   (free?'':'<section><h3>Critérios de sucesso</h3><div id="goals"></div></section>')+
   '<section><div class="row"><label for="loadnum">Carga de entrada</label><span class="loadnumber"><input type="number" id="loadnum" min="1" max="100000" step="1"> req/s</span></div><input aria-label="Ajustar carga de entrada" class="range" id="load" type="range" min="1" max="'+Math.max(5000,l.load*2,load)+'" value="'+load+'"><button class="run" id="run">▷ &nbsp; Simular tráfego</button></section>'+
   (free?'':'<details><summary>Pistas da missão</summary><ol>'+l.hints.map(h=>'<li>'+esc(h)+'</li>').join('')+'</ol></details><details><summary>Conceito e referências</summary><p>'+esc(l.concept)+'</p>'+l.sources.map(s=>'<p><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.title)+'</a></p>').join('')+'</details>')+'<details><summary>Controles do laboratório</summary><p>Clique ou arraste um componente da biblioteca. Selecione um bloco para configurar suas instâncias ou simular uma falha. Para ligar dois blocos, clique no conector de saída e depois no destino.</p><button class="secondary" id="reset">Restaurar topologia inicial</button></details></aside></div>';
+  if(view==='ensaio'){
+    const guide=document.createElement('section');guide.className='teach walkthrough';
+    const extra=componentCourse[id];
+    guide.innerHTML='<div class="teach-body"><h2>Experimento com '+esc(catalog[id].name)+'</h2><p>A montagem inicial corresponde ao primeiro passo. Se já editou este ensaio, seu rascunho aparece no grid. Para recomeçar, use Restaurar topologia inicial nos controles do laboratório.</p><p>'+esc(extra.example)+'</p><ol>'+extra.walkthrough.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ol><a class="lesson-help" href="#pecas/'+id+'">Rever a aula desta peça</a></div>';
+    app.querySelector('.workspace').before(guide);
+  }
   const range=app.querySelector('#load');
   const numeric=app.querySelector('#loadnum'); function setLoad(){numeric.value=load;range.max=Math.max(Number(range.max),load);range.value=load} numeric.onchange=()=>{load=Math.max(1,Math.min(100000,Math.round(Number(numeric.value)||l.load)));setLoad();invalidate();persist()}; const reset=app.querySelector('#reset');if(reset)reset.onclick=()=>{if(confirm('Restaurar os blocos e as conexões iniciais deste cenário?')){delete saved.drafts[l.id];save();render(location.hash.slice(1))}};
   setLoad();

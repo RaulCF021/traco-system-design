@@ -44,7 +44,7 @@ function goto(label,hash,cls='') {
 function heading(section,title,body) {
   section.append(el('h2','ds-h2',title));if(body)section.append(el('p','ds-copy',body));
 }
-export function mountDesignSchool(container,state={},save=()=>{}) {
+export function mountDesignSchool(container,state={},save=()=>{},initialId) {
   if(!document.querySelector('link[data-design-school]')){
     const link=el('link');link.rel='stylesheet';link.href=new URL('./design-school.css',import.meta.url).href;
     link.dataset.designSchool='';document.head.append(link);
@@ -52,10 +52,11 @@ export function mountDesignSchool(container,state={},save=()=>{}) {
   const memory=state.designSchool??={};
   memory.projects??={};
   let id=Object.hasOwn(facts,memory.selected)&&Object.hasOwn(scenarios,memory.selected)?memory.selected:'loja';
+  if(Object.hasOwn(scenarios,initialId))id=initialId;
   const root=el('article','ds-school');container.replaceChildren(root);
   const data=()=>{const d=memory.projects[id]??={};d.answers??={};return d};
   function store(){memory.selected=id;save()}
-  function choose(next){id=next;store();draw();root.querySelector('[aria-pressed="true"]').focus({preventScroll:true})}
+  function choose(next){id=next;store();location.hash='requisitos/'+id}
   function move(step) {
     data().step=step;store();draw();const h=root.querySelector('.ds-body h2');h.tabIndex=-1;h.focus();
   }
@@ -90,7 +91,7 @@ export function mountDesignSchool(container,state={},save=()=>{}) {
     for(const [a,b] of [['Quem pede',f.from],['Qual ação',f.request],['Do que depende',f.depends]]) {
       const item=el('li');item.append(el('small','',a),el('strong','',b));flow.append(item);
     }
-    stage.append(flow,goto('Abrir projeto no editor →','projeto/'+id,'ds-launch'));root.append(stage);
+    stage.append(flow);root.append(stage);
     const dock=el('div','ds-dock');const nav=el('nav','ds-steps');
     nav.setAttribute('aria-label','Etapas do desenho');
     steps.forEach((label,i)=>{const b=control((i+1)+'. '+label,()=>move(i));if(i===page)b.setAttribute('aria-current','step');nav.append(b)});
@@ -125,10 +126,20 @@ export function mountDesignSchool(container,state={},save=()=>{}) {
       ]);
       note(body,'Um primeiro experimento para o editor',f.next);
     }
-    dock.append(body);
+    const prompts=[
+      ['Descreva a ação em uma frase','Quem inicia, o que envia e qual resultado precisa receber?',f.action],
+      ['Escreva um critério verificável','Complete: quando a pessoa fizer…, o sistema deve…, e eu vou conferir…','Ao abrir a tela, a pessoa recebe o resultado solicitado. No ensaio de pico, vou conferir quantos dos '+number(cfg.load)+' pedidos/s terminam.'],
+      ['Anote uma restrição','Qual condição torna uma solução inadequada mesmo que ela seja rápida?',f.limit],
+      ['Registre sua hipótese','Qual peça você mudaria? Qual medida espera ver mudar? Por quê?',f.next]
+    ];
+    const [label,hint,example]=prompts[page],sheet=el('div','req-sheet'),field=el('label');
+    field.append(el('strong','',label),el('span','',hint));
+    const input=el('textarea');input.rows=2;data().notes??={};input.value=data().notes[page]||'';
+    input.oninput=()=>{data().notes[page]=input.value;store()};field.append(input);sheet.append(field);
+    note(sheet,'Ver um exemplo de raciocínio',example);body.append(sheet);dock.append(body);
     const actions=el('div','ds-actions');
     if(page<3)actions.append(control('Próxima etapa →',()=>move(page+1),'ds-next'));
-    if(page===3)actions.append(goto('Testar minha decisão no editor →','projeto/'+id,'ds-launch'));
+    if(page===3)actions.append(goto('Montar com orientação','guiado/'+id,'ds-launch'));
     dock.append(actions);root.append(dock);
     const footer=el('div','ds-foot');footer.append(goto('Conhecer as peças','pecas/client'),goto('Começar em um quadro vazio','livre'));root.append(footer);
   }

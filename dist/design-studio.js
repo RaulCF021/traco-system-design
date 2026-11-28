@@ -169,7 +169,16 @@ export function mountDesignStudio(container, scenarioId, state = {}, save = ()=>
   editHint.append(element('p','','Clique ou arraste uma peça da biblioteca. Clique em uma peça da mesa para configurar instâncias, simular uma falha ou remover o bloco. Para ligar duas peças, clique na porta de saída e depois na peça de destino.'));
   controls.append(loadLabel,submit,status,editHint);
   const results=element('section','ds-results');
-  root.append(head,goal,guide,canvas,controls,results);container.replaceChildren(root);
+  const training=element('div','teach-actions');
+  for(const [label,path] of [['Montar com orientação','guiado'],['Revisar requisitos','requisitos'],['Avaliar minha decisão de arquitetura','revisao']]){
+    const a=element('a','teach-link',label);a.href='#'+path+'/'+id;training.append(a)
+  }
+  const plan=disclosure('Meu levantamento de requisitos');
+  const notes=state.designSchool?.projects?.[id]?.notes||{};
+  ['Ação principal','Critério de aceitação','Restrição','Hipótese'].forEach((name,i)=>{
+    const row=element('p');row.append(element('strong','',name+' · '),document.createTextNode(notes[i]||'Ainda não registrado.'));plan.append(row)
+  });
+  root.append(head,goal,training,plan,guide,canvas,controls,results);container.replaceChildren(root);
   function persist(){Object.assign(draft,{graph,load,last,previous});save();}
   function refreshStatus(){
     const changed=load!==last.load||JSON.stringify(graph)!==JSON.stringify(last.graph);
